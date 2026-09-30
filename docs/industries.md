@@ -1,31 +1,53 @@
-# Omega core effects: industry worksheet
+# Omega core effects: design sheet
 
-Every colony building that can hold an AI core, grouped by where it comes from, with what it does
-and what an Alpha core adds there today. Write the Omega effect you want after **Omega:**, or
-answer in chat.
+Every colony building that can hold an AI core, grouped by where it comes from: what the building
+does, what the normal cores do there today, and the Omega effect.
 
-How AI cores work now, for comparison:
+Status marks:
 
-- **Alpha core, everywhere:** upkeep −25%, demand −1. Production buildings (and Population,
-  Lion's Guard and Cryosanctum) also get +1 to everything they make. The "Alpha today" lines below
-  list only what Alpha adds on top of that.
-- **Omega core in vanilla, today:** it can already be installed in any building that takes AI
-  cores. It gives upkeep −25% and nothing else, and the tooltip says "No effect". It also adds no
-  Luddic Path interest (Alpha adds the most of the three normal cores).
+- **Omega:** decided by Andrzej.
+- **Omega (assumed):** decided, with a detail filled in that still needs a yes.
+- **Omega (proposal):** suggested, not decided.
+- **Omega (open):** waiting for a decision.
 
-## Default for production buildings
+Nothing here is built yet. The mod currently only makes Omega cores drop.
 
-Buildings whose job is making commodities get one shared Omega effect instead of a unique one.
+## How the normal cores work, for comparison
 
-Proposal: **double the Alpha effect.** Production +2, demand −2, upkeep −50%.
+- **Gamma:** demand −1.
+- **Beta:** demand −1, upkeep −25%.
+- **Alpha:** demand −1, upkeep −25%, and production buildings make +1 of everything.
+- **Omega in vanilla, today:** installs anywhere AI cores fit, gives upkeep −25% and nothing else.
+  The core picker says "No effect". No Luddic Path interest.
 
-**Omega (production default):**
+Modded buildings often replace these with their own effects; those are listed per building.
+
+## Shared rules
+
+**Production buildings** (anything whose job is making commodities) share one Omega effect:
+
+- Production ×2.
+- Demand ×0.5.
+- Upkeep ×2. The industry struggles to keep up with the core. This replaces the usual −25%.
+
+**Buildings with a unique effect** keep the usual −25% upkeep from having an AI core.
+
+**Buildings marked "no effect"** still accept the core and still get the vanilla −25% upkeep,
+nothing more.
+
+**Buildings from mods not on this sheet:** if they make commodities, they get the production
+effect automatically. Otherwise nothing.
+
+**Where the effect is shown:** the core picker ("choose an AI core") will keep saying "No effect"
+for Omega. That text is written inside each building, not in a shared table, and changing it means
+replacing every building, which breaks other mods and existing colonies. The real Omega effect is
+shown in the building's own tooltip instead.
 
 ---
 
 ## Vanilla
 
-### Production buildings (use the default)
+### Production buildings (shared effect)
 
 | Building | ID | Makes |
 | --- | --- | --- |
@@ -37,192 +59,179 @@ Proposal: **double the Alpha effect.** Production +2, demand −2, upkeep −50%
 | Heavy Industry | `heavyindustry` | Heavy machinery, supplies, weapons and ship hulls; runs your custom production |
 | Orbital Works | `orbitalworks` | Heavy Industry upgrade: more ship hulls and fewer d-mods |
 | Fuel Production | `fuelprod` | Fuel, from volatiles |
+| Cryosanctum | `cryosanctum` | Organs. Rare Domain-era relic, cannot be built |
 
-### Buildings with a side output (unique effect, or the default?)
-
-These make a commodity, but that is not their main job.
+### Unique effects
 
 **Population & Infrastructure** (`population`)
 The colony itself. Demands food and goods; makes crew, drugs and organs once the colony is big enough.
 Alpha today: +1 crew, drugs and organs.
-Omega:
+Omega: population growth ×2, applied after every other modifier. Only growth is doubled, a
+shrinking colony does not shrink faster.
 
 **Spaceport / Megaport** (`spaceport`, `megaport`)
 Accessibility, which drives trade income and how well the colony imports. Also makes crew.
 Alpha today: accessibility +20%.
-Omega:
+Omega: 1000 crew into the colony's storage every month.
 
 **Patrol HQ / Military Base / High Command** (`patrolhq`, `militarybase`, `highcommand`)
-Spawn patrol fleets that defend the system (Military Base and High Command also send fleets to
-other systems). Make crew and marines.
+Spawn patrol fleets that defend the system. Make crew and marines.
 Alpha today: fleet size +25%.
-Omega:
+Omega: fleet size ×2, applied after every other modifier.
 
 **Lion's Guard HQ** (`lionsguard`)
-Sindrian Diktat only. Elite Lion's Guard patrols. Makes crew and marines.
-Alpha today: +1 crew and marines.
-Omega:
+Sindrian Diktat only, cannot be built.
+Omega: no effect.
 
 **Ground Defenses / Heavy Batteries** (`grounddefenses`, `heavybatteries`)
 Ground defense strength against raids and invasions. Makes marines.
 Alpha today: ground defenses ×1.5.
-Omega:
-
-**Cryosanctum** (`cryosanctum`)
-Rare Domain-era relic, cannot be built. Makes organs.
-Alpha today: +1 organs.
-Omega:
-
-### Buildings with no output (unique effect)
+Omega: ground defenses ×10, and 500 marines into storage every month.
 
 **Tech-Mining** (`techmining`)
 Digs through Domain ruins each month for weapons, blueprints and colony items.
 Alpha today: finds +25%.
-Omega:
+Omega: finds +100%.
 
 **Commerce** (`commerce`)
 Colony income +25%, stability −3.
 Alpha today: another +25% colony income.
-Omega:
+Omega: colony income ×2.
 
 **Orbital Station / Battlestation / Star Fortress** (`orbitalstation`, `battlestation`,
-`starfortress`, each also `_mid` and `_high`; low-tech, midline and high-tech)
-The station that defends the colony in battle and must be beaten before a raid or bombardment.
+`starfortress`, each also `_mid` and `_high`)
+The station that defends the colony in battle.
 Alpha today: stronger station in combat (an Alpha-level commander).
-Omega:
+Omega: the station cannot be disrupted, and always fights at 100% combat readiness.
 
 **Planetary Shield** (`planetaryshield`)
 Triples ground defenses.
 Alpha today: ground defenses ×1.5 on top.
-Omega:
+Omega: no building on the colony can be disrupted.
 
 **Waystation** (`waystation`)
 Accessibility, plus a stockpile of fuel, supplies and crew you can buy.
 Alpha today: much larger stockpiles.
-Omega:
+Omega (assumed): every month, storage gets fuel, supplies, food, metals and heavy machinery:
+100 × colony size of each (600 of each at size 6). The amounts are a first guess to tune in play.
 
 **Cryorevival Facility** (`cryorevival`)
 Large population growth, powered by a Domain cryosleeper in the system.
-Alpha today: growth bonus doubled.
-Omega:
+Omega: no effect.
 
 ---
 
 ## Industrial Evolution (optional)
 
-IndEvo gives most of its buildings their own Alpha, Beta and Gamma effects already.
-
-### Production buildings (use the default?)
+### Production buildings (shared effect)
 
 | Building | ID | Makes |
 | --- | --- | --- |
 | Specialized Mining | `IndEvo_SwitchableMining` | Mining focused on one resource, for more of it |
 | Specialized Refining | `IndEvo_SwitchableRefining` | Refining focused on one product, for more of it |
 | Salvage Yards | `IndEvo_ScrapYard` | Ship parts, metals and hulls, from wrecks destroyed in the system |
-| Variable Manufactory / Assembler | `IndEvo_AdManuf`, `IndEvo_AdAssem` | Whatever commodity its installed chip is set to (Alpha: output up) |
-| Commodity Forge | `IndEvo_ComForge` | Burns a chip for three big batches of a commodity into storage (Alpha: faster) |
+| Variable Manufactory / Assembler | `IndEvo_AdManuf`, `IndEvo_AdAssem` | Whatever commodity its installed chip is set to |
+| Commodity Forge | `IndEvo_ComForge` | Burns a chip for big batches of a commodity into storage (Omega doubles the batch) |
 
-### Buildings with no real output (unique effect)
-
-**Specialized Government** (`IndEvo_SwitchablePopulation`)
-IndEvo's Population & Infrastructure, with a chosen government focus.
-Omega:
+### Unique effects
 
 **Centralization Bureau** (`IndEvo_AdInfra`)
-Raises output of every identical building in the star system. Takes a core only when no item is installed.
-Alpha today: highest cap on that bonus.
-Omega:
+For each building on this colony that also exists on your other colonies in the same star system,
+adds production (and the same amount of demand) per copy, up to a cap. Takes a core only when no
+colony item is installed.
+Today: cap 1 (Gamma), 2 (Beta), 3 (Alpha). The Logistics Core item raises the cap to 4 and the
+reach from the star system to 12 light-years.
+Omega: cap 8, reach 100 light-years. Demand rises with production, as with the Logistics Core.
 
 **Supercomputer** (`IndEvo_SupCom`)
-Raises income of every colony in the system; burns AI cores from its own storage as fuel.
-Alpha today: stronger income boost.
-Omega:
+Needs an AI core to run and burns it out after a while, then takes the next one from its storage.
+Raises the income of every colony you own in the star system: +5%, +15% on a cold world, +20% on a
+very cold one.
+Today: Gamma upkeep −10%. Beta upkeep −20% and a monthly credit payout. Alpha makes the income
+bonus 20% stronger.
+Omega (assumed): income ×2 for every colony you own in that star system, and the core never burns
+out.
+Note: right now an Omega core in a Supercomputer crashes the game a day later (an IndEvo bug, it
+happens with Astral Ascension too). This mod has to fix that either way.
 
 **Embassy** (`IndEvo_embassy`)
-Improves relations with one faction each month; makes every reputation loss 50% worse.
-Alpha today: smaller reputation-loss penalty.
-Omega:
-
-**Senate** (`IndEvo_senate`)
-One per star system. Lets you enact colony policies more directly.
-Alpha today: stability bonus.
-Omega:
+Hosts an ambassador from one faction. Slowly improves relations with it; every reputation loss is
+50% worse.
+Today: Gamma lower upkeep. Beta raises how high the reputation can climb on its own. Alpha shrinks
+the reputation-loss penalty.
+Omega: reputation with the ambassador's faction goes straight to the maximum and stays there.
 
 **Restoration Docks** (`IndEvo_dryDock`)
 Slowly removes d-mods from ships in its storage, much cheaper than instant restoration.
-Alpha today: faster repairs, lower upkeep while idle.
-Omega:
+Today: Gamma spreads the work, a capped number of d-mods per ship each month. Beta cheaper repairs,
+least damaged ships first. Alpha more d-mods removed per month and lower upkeep while idle.
+Omega: every ship placed inside is fully restored at once, for free.
 
 **Academy** (`IndEvo_Academy`)
-Trains and stores officers and administrators; better officers for the system.
-Alpha today: can retrain an officer's personality a second time.
-Omega:
+Trains and stores officers and administrators; can retrain an officer's personality.
+Today: Gamma lower upkeep. Beta shorter training times. Alpha unlocks a second kind of training.
+Omega (assumed): officers in your fleet and in the Academy's storage jump to the maximum level
+(you pick their skills as usual) and gain a special skill: their ship's time runs 20% faster.
+Administrators in the Academy's storage and on your colonies gain Hypercognition.
 
 **Requisitions Centre** (`IndEvo_ReqCenter`)
-A shop that sells weapons from factions that like you.
-Alpha today: more weapons for sale, skips ones you already have plenty of.
-Omega:
-
-**Engineering Hub** (`IndEvo_EngHub`)
-Reverse-engineers ships you put in its storage into blueprints.
-Alpha today: faster reverse engineering.
-Omega:
-
-**Courier Port** (`IndEvo_PrivatePort`)
-Recurring shipping contracts that move cargo between your colonies.
-Alpha today: cheaper shipping.
-Omega:
-
-**Privateer Base** (`IndEvo_pirateHaven`)
-Pirates living on your colony raid hostile systems and bring back spoils.
-Alpha today: stronger raids, more spoils.
-Omega:
-
-**Animal Center** (`IndEvo_PetStore`)
-Sells pets. Makes pet food.
-Alpha today: higher chance of rare pets.
-Omega:
+A shop that sells weapons from a faction that likes you, normally the one whose ambassador sits in
+the Embassy.
+Today: Gamma sells from any faction that likes you enough. Beta more weapons for sale. Alpha more
+weapons, and skips ones you already have plenty of.
+Omega: the colony gets a free shop that stocks every weapon known to every faction on good terms
+with you. Restocked monthly. Weapons only, no fighter wings.
 
 **Museum** (`IndEvo_Museum`)
-Displays ships and stages parades for income.
-Alpha today: more parade fleets at once.
-Omega:
+Ships put in its storage are exhibited for income, by their value (duplicates do not count). It can also send parade fleets around your colonies.
+Today: Gamma more museum income. Beta stability and growth that scale with museum income. Alpha
+more parade fleets at once.
+Omega (proposal): museum income ×2.
 
 **Orbital Artillery** (`IndEvo_Artillery_mortar`, `_missile`, `_railgun`)
-Restored Domain defence platform that shells hostile fleets in the system.
-Alpha today: stronger station in combat.
-Omega:
+Restored Domain platform that shells hostile fleets in the system, with a battlestation.
+Today: all cores give a stronger station in combat.
+Omega (open): "rate of fire reduced by half" — assumed to mean it fires twice as often. Plus 100%
+combat readiness for its station. The firing delay is one shared IndEvo number for every artillery
+in the sector, so doing it for a single station still has to be proven possible.
 
 **Hull Deconstructor** (`IndEvo_HullDecon`)
-Restored ruin. Breaks ships down into forge templates.
-Alpha today: gives the template a permanent logistics hull mod.
-Omega:
+Restored ruin. Destroys a ship you put in and writes it onto an empty Forge Template, with a few
+charges. Takes days by ship size.
+Today: Gamma lower upkeep while idle, fewer scanning errors. Beta one extra charge on the template,
+more errors. Alpha the ship also gets a permanent logistics hull mod, more errors.
+Omega (proposal): done in one day, and the template comes out with double charges.
 
 **Hull Forge** (`IndEvo_HullForge`)
-Restored ruin. Builds ships from forge templates.
-Alpha today: built ships get two permanent hull mods.
-Omega:
+Restored ruin. Builds a copy of the ship stored on a Forge Template, using one charge. An emptied
+template degrades and has to be repaired. Takes days by ship size.
+Today: Gamma lower upkeep while idle, fewer construction errors. Beta a chance an emptied template
+does not degrade, cheaper builds, more errors. Alpha built ships get two permanent hull mods, more
+errors.
+Omega (proposal): builds take one day, templates never degrade, ships get three permanent hull
+mods.
 
 **Ancient Laboratory** (`IndEvo_ResLab`)
-Restored ruin. Restores broken forge templates.
-Alpha today: unlocks a third commodity, smaller bonus.
-Omega:
+Restored ruin. Repairs Degraded Forge Templates back into empty ones. Also boosts production of
+two commodities on the colony.
+Today: Gamma faster repair. Beta one boosted commodity, bigger boost. Alpha three boosted
+commodities, smaller boost.
+Omega (proposal): repairs take one day; three boosted commodities at the big Beta boost.
 
-**Rift Generator** (`IndEvo_RiftGen`)
-Restored ruin. Opens an artificial rift that can move planets between star systems.
-Alpha today: shorter recharge.
-Omega:
+### No effect
 
-**Commerce (IndEvo version)** (`commerce`)
-IndEvo replaces vanilla Commerce with its own. The vanilla Commerce effect would apply to it.
+Senate (edicts are left alone), Engineering Hub, Courier Port, Privateer Base, Animal Center
+(deprecated), Rift Generator.
+
+### Not supported
+
+Specialized Government (`IndEvo_SwitchablePopulation`): buggy, and clashes with AoTD.
 
 ---
 
 ## AoTD Vaults of Knowledge (optional)
 
-VoK replaces most vanilla production buildings with its own upgrade tree.
-
-### Production buildings (use the default?)
+### Production buildings (shared effect)
 
 | Building | ID | Makes |
 | --- | --- | --- |
@@ -247,112 +256,118 @@ VoK replaces most vanilla production buildings with its own upgrade tree.
 | Macro-Industrial Complex | `aotd_macro_industrial_complex` | Late Heavy Industry: Domain-grade machinery and supplies |
 | Garden of Elysium | `aotd_garden_of_elysium` | Resort Center upgrade: food and luxury goods, plus tourism income |
 
-### Buildings with no real output (unique effect)
+### Unique effects
 
 **Resort Center** (`aotd_resort_center`)
-Tourism income on a beautiful, stable, accessible world.
-Alpha today: income +%.
-Omega:
+Tourism income that scales with accessibility, and +2 stability. Needs luxury goods, a habitable
+world and no pollution.
+Today: resort income +30% (Gamma), +40% (Beta), +50% (Alpha).
+Omega: colony income ×2, hazard rating −25%.
 
 **Terminus** (`aotd_terminus`)
-Waystation upgrade: more accessibility and larger stockpiles.
-Alpha today: VoK's own bonus.
-Omega:
+Waystation upgrade: accessibility +30%, stockpiles of fuel, supplies and crew.
+Today: Alpha lower upkeep and demand, accessibility +20%, much larger stockpiles.
+Omega: accessibility raised to 1000%.
 
 **Trade Outpost / Underworld** (`aotd_trade_outpost`, `aotd_underworld`)
-VoK's Commerce: a small trade post, upgradable to an Underworld that trades in illegal goods.
-Alpha today: VoK's own bonus.
-Omega:
+VoK's Commerce. Trade Outpost: colony income +25%, stability −1, and a trade market open the first
+week of each month. Underworld (needs free port): colony income +40%, stability −5, and a black
+market.
+Today: Alpha adds another +25% (Trade Outpost) or +40% (Underworld) colony income.
+Omega: no stability penalty, colony income ×2.
 
 **Research Facility / Black Site** (`aotd_research_facility`, `aotd_blacksite`)
-Generates research databanks for VoK's research tree; the Black Site does forbidden research.
-Alpha today: more databanks per month.
-Omega:
-
-**Persean Technology Institute** (`aotd_persean_university`)
-Big research speed bonus; administrators can take classes for special skills.
-Alpha today: nothing extra.
-Omega:
+Lets you research VoK technologies and makes 1 research databank a month. Expensive upkeep that
+grows with what is being researched. The Black Site is a hidden version with extra cover-up costs.
+Today: upkeep −10% (Gamma), −25% (Beta), −50% (Alpha). Alpha also +1 databank a month.
+Omega: 10 databanks into storage every month, research 4× as fast. The 4× counts once, however
+many facilities hold an Omega core.
 
 **Exomatter Processing** (`aotd_exomatter_processing`)
-Turns Shrouded Substrate into Tenebrium Cells.
-Alpha today: faster conversion, bigger yield.
-Omega:
+Turns 4 Shrouded Substrate (2 when improved) into 1 Tenebrium Cell every 35 days. Demands marines.
+Today: Beta lower upkeep and demand, 15 days per batch. Alpha the same, and 2 cells per batch.
+Omega (proposal): 5 days per batch, 4 cells per batch.
 
 **Star Citadel (Low Tech / High Tech)** (`aotd_citadel`, `aotd_citadel_hightech`)
 Fourth station tier, above the Star Fortress.
-Alpha today: stronger station in combat.
-Omega:
+Omega: same as the vanilla stations. Cannot be disrupted, always 100% combat readiness.
 
-**Daedalus Array** (`aotd_daedalus_array`)
-Restored megastructure spaceport. Huge accessibility, makes crew.
-Alpha today: nothing extra.
-Omega:
+### No effect
 
-**Hypershunt Control** (`aotd_coronal_control`)
-Colony built into a restored Coronal Hypershunt.
-Alpha today: nothing extra.
-Omega:
+Daedalus Array, Hypershunt Control (would be buggy).
+
+Persean Technology Institute (`aotd_persean_university`): in VoK 5.0.5 this is an unfinished
+placeholder. It cannot be built and does nothing, so there is nothing to improve yet.
 
 ---
 
 ## Terraforming & Station Construction (optional)
 
-### Production buildings (use the default?)
+Omega effects for every TASC building are still open.
+
+### Production buildings (shared effect, assumed)
 
 | Building | ID | Makes |
 | --- | --- | --- |
 | Hydroponics | `BOGGLED_HYDROPONICS` | Food without farmland |
-| Cloning | `BOGGLED_CLONING` | Organs (TASC's building, not your Cloning mod) |
+| Cloning | `BOGGLED_CLONING` | Organs, and population growth that rises with colony size. Needs Domain artifacts, and organics on worlds that are not habitable. Draws Luddic Path interest |
 | Cryosanctum | `BOGGLED_CRYOSANCTUM` | A buildable Cryosanctum: organs |
 | Domain Archaeology | `BOGGLED_DOMAIN_ARCHAEOLOGY` | Domain-era artifacts, from ruins |
 
-### Buildings with no real output (unique effect)
+All four use the plain vanilla core effects today.
+
+### Buildings that need a unique effect
 
 **Mesozoic Park** (`BOGGLED_MESOZOIC_PARK`)
-Tourist income from engineered dinosaurs. Needs a stable, accessible colony.
-Alpha today: TASC's own bonus.
-Omega:
+Tourist income from engineered dinosaurs. Pays more the higher the accessibility and stability.
+Today: park income +10% (Gamma), +20% (Beta), +40% (Alpha).
+Omega (open):
 
 **Genelab** (`BOGGLED_GENELAB`)
-Genetic engineering: cleans pollution, adds lobsters, stocks Mesozoic Park.
-Alpha today: Mesozoic Park income up.
-Omega:
+Doubles Mesozoic Park income on the same colony. Also runs genetic terraforming projects: removing
+pollution, seeding lobsters.
+Today: adds to the park income boost: +15% (Gamma), +30% (Beta), +60% (Alpha).
+Omega (open):
 
 **Limelight Network** (`BOGGLED_LIMELIGHT_NETWORK`)
-Big income from an addictive VR network; lowers production across the colony.
-Alpha today: TASC's own bonus.
-Omega:
+Big income from an addictive VR network. Lowers every commodity the colony produces by 1. Needs
+Domain artifacts.
+Today: Alpha network income +30%.
+Omega (open):
 
 **CHAMELEON** (`BOGGLED_CHAMELEON`)
-Code-breaking supercomputer that hunts Pather cells and rogue AI cores.
-Alpha today: wipes out Pather cells on the colony.
-Omega:
+Surveillance supercomputer. The building itself draws Luddic Path interest.
+Today: Alpha, while its artifact demand is met, cancels all Luddic Path interest on the colony, so
+no Pather cells.
+Omega (open):
 
 **Domed Cities** (`BOGGLED_DOMED_CITIES`)
-Removes bad planet conditions; the colony becomes almost defenceless.
-Alpha today: stability bonus.
-Omega:
+Removes bad planet conditions (also as Sky Cities and Seafloor Cities). Ground defenses drop to
+almost nothing.
+Today: stability +1 (Gamma), +2 (Beta), +3 (Alpha).
+Omega (open):
 
 **Kletka Simulator** (`BOGGLED_KLETKA_SIMULATOR`)
-Tries to make one AI core each month.
-Alpha today: better odds of higher cores.
-Omega:
+Each month it tries to train an AI core: about 25% Beta, 25% Gamma, 50% nothing. It cannot make an
+Alpha without an installed core.
+Today: better odds: +5 (Gamma), +10 (Beta), +15 (Alpha) points on a 100-point roll. Alpha cores
+only appear at the very top of the roll.
+Omega (open):
 
 **AI Mining Drones** (`BOGGLED_AI_MINING_DRONES`)
-Stations only. Boosts the station's Mining, and needs an AI core to do anything.
-Alpha today: mining +N units.
-Omega:
+Stations only. Does nothing without a core.
+Today: mining +1 (Gamma), +2 (Beta), +3 (Alpha).
+Omega (open):
 
 **Harmonic Damper** (`BOGGLED_HARMONIC_DAMPER`)
-Cancels tectonic activity and raises ground defenses.
-Alpha today: bigger ground-defense bonus.
-Omega:
+Cancels tectonic activity.
+Today: ground defenses ×1.25 (Gamma), ×1.5 (Beta), ×2 (Alpha).
+Omega (open):
 
 **Autonomous AI Battlestation** (`BOGGLED_REMNANT_STATION`)
-A Remnant battlestation as your colony's station.
-Alpha today: stronger station in combat.
-Omega:
+A Remnant battlestation as the colony's station. The installed core becomes its commander.
+Today: a stronger commander with each core tier. An Omega core is treated like a Gamma.
+Omega (open): the vanilla station effect would fit.
 
 ---
 
@@ -364,9 +379,9 @@ Omega:
 - **Reverse Engineering Hub I–III** (Rev. Eng. Private Arsenal, and Coalesced Little Mods): 2 days
   per item, and the Private Arsenal becomes free.
 
-## Cannot hold an AI core (skip)
+This mod leaves both alone, so they do not also get the production effect.
 
-These buildings refuse every AI core, so an Omega core cannot be installed either.
+## Cannot hold an AI core (skip)
 
 - IndEvo: Military Relays, Interstellar Relay, Warehouse Complex, Wormhole Complex, World Symbols
   and every wonder (palaces, Memorial, Leisure Orbitals, Cathedral, Ice Palace, Lava Fortress,
