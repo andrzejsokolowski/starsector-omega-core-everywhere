@@ -1,0 +1,20 @@
+{
+  "id": "omega_core_everywhere",
+  "name": "Omega Core Everywhere",
+  "author": "Oddisz",
+  "utility": "false",
+  "version": "0.1.0",
+  "description": "Omega cores drop from destroyed Omega ships, no Astral Ascension needed, so the mods that use them in colony buildings keep working. The drop chance is in the LunaLib settings. With Astral Ascension installed, its own drop settings stay in charge.",
+  "gameVersion": "0.98a-RC8",
+  "jars": ["jars/OmegaCoreEverywhere.jar"],
+  "modPlugin": "omegacoreeverywhere.OmegaCoreEverywherePlugin",
+  "updateCheckURL": "https://raw.githubusercontent.com/andrzejsokolowski/starsector-omega-core-everywhere/main/omega_core_everywhere.version",
+  "originalGameVersion": "0.98a-RC8",
+  "dependencies": [
+    {
+      "id": "lunalib",
+      "name": "LunaLib",
+      "version": { "major": "2", "minor": "0", "patch": "0" }
+    }
+  ]
+}

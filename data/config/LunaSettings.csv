@@ -1,0 +1,7 @@
+fieldID,fieldName,fieldType,defaultValue,secondaryValue,fieldDescription,minValue,maxValue,tab
+oce_header_drops,Drops Header,Header,Omega core drops,,,,,Drops
+oce_drops_text,Drops Text,Text,"Destroyed Omega ships can drop the Omega core that commanded them. Bigger ships drop it more often, the same way vanilla AI cores work: a destroyer counts twice, a cruiser three times and a capital four times.
+
+If Astral Ascension is installed, it keeps control of Omega core drops and these two settings do nothing.",,,,,Drops
+oce_drops_enabled,Omega cores drop,Boolean,true,,Destroyed Omega ships can drop their Omega core. Switch off to make Omega cores unobtainable again.,,,Drops
+oce_drop_chance,Drop chance,Double,0.33,,"Chance that a destroyed Omega frigate drops its core. Destroyers, cruisers and capitals multiply it by 2, 3 and 4.",0,1,Drops
