@@ -23,6 +23,9 @@ dependencies {
     compileOnly fileTree(dir: "${starsectorPath}/starsector-core", include: '*.jar')
     // LunaLib supplies the settings page. Found wherever the mod happens to be installed.
     compileOnly fileTree(dir: "${starsectorPath}/mods", include: '**/LunaLib.jar')
+    // Optional mods whose buildings get Omega effects. Only IndEvoEffects and VokEffects touch
+    // their classes, and those two are never loaded unless the mod is enabled in the game.
+    compileOnly fileTree(dir: "${starsectorPath}/mods", include: ['**/IndEvo.jar', '**/Vok.jar'])
     testImplementation files(sourceSets.main.compileClasspath)
 }
 

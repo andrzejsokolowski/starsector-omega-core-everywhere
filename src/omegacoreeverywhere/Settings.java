@@ -3,16 +3,23 @@ package omegacoreeverywhere;
 import lunalib.lunaSettings.LunaSettings;
 
 /** LunaLib values, read live. A missing value falls back to the default in LunaSettings.csv. */
-final class Settings {
+public final class Settings {
 
     static final boolean DEFAULT_DROPS_ENABLED = true;
     static final float DEFAULT_DROP_CHANCE = 0.33f;
+    static final boolean DEFAULT_EFFECTS_ENABLED = true;
 
     private Settings() {}
 
     static boolean dropsEnabled() {
         Boolean value = LunaSettings.getBoolean(OmegaCoreEverywherePlugin.MOD_ID, "oce_drops_enabled");
         return value == null ? DEFAULT_DROPS_ENABLED : value;
+    }
+
+    /** Read every frame by the effects, so switching it takes hold at once. */
+    public static boolean effectsEnabled() {
+        Boolean value = LunaSettings.getBoolean(OmegaCoreEverywherePlugin.MOD_ID, "oce_effects_enabled");
+        return value == null ? DEFAULT_EFFECTS_ENABLED : value;
     }
 
     static float dropChance() {

@@ -19,7 +19,33 @@ not tag or publish a release without his go-ahead.
   and sets `drop_prob_officer_omega_core`. Stands down when Astral Ascension
   (`Planetace_AstralAscension`) is enabled, because it sets the same values.
 - `src/omegacoreeverywhere/Settings` - LunaLib reads with defaults.
-- `docs/industries.md` - the Omega effect worksheet for every building that takes an AI core.
+- `src/omegacoreeverywhere/effects/OmegaEffects` - transient every-frame script and economy
+  listener. Walks the player's colonies, finds buildings holding an Omega core and asserts each
+  effect. Suspended by the plugin before every save and resumed after it.
+- `src/omegacoreeverywhere/effects/Effect` - building id to effect, plus the tooltip sentence.
+  A new building starts here.
+- `src/omegacoreeverywhere/effects/Ledger` - every stat modifier and other change the mod makes,
+  with its undo. Anything not re-asserted in a frame is undone; everything is undone before a save.
+- `src/omegacoreeverywhere/effects/IndEvoEffects`, `VokEffects` - the only classes that import
+  Industrial Evolution and AoTD Vaults of Knowledge. Both mods are optional for players, so nothing
+  but `OmegaEffects` may call these two, and only behind its `indEvo` / `vok` checks. TASC effects
+  need no TASC classes.
+- `src/omegacoreeverywhere/effects/Training` - the Academy effect: officer levels, the
+  `oce_omega_tutelage` skill, Hypercognition for administrators.
+- `src/omegacoreeverywhere/effects/OmegaTooltip` - adds the "Omega core" section to building tooltips.
+- `src/omegacoreeverywhere/skills/OmegaTutelage` - the skill effect, registered in
+  `data/characters/skills/`.
+- `docs/industries.md` - every building that takes an AI core and its Omega effect.
+
+## Rules for the effects
+
+- No building class is replaced. Effects are stat modifiers under `oce_` ids, or calls into a
+  building's public methods.
+- Nothing of this mod may reach a save: place changes through the `Ledger` so `suspend()` undoes
+  them. The mod's own skill is never saved; the officer carries the `$oce_omegaTutelage` flag
+  instead. The one exception is the Supercomputer's stretched core lifetime, kept on purpose.
+- Building needs IndEvo and VoK installed (`compileOnly` in `build.gradle`); playing does not.
+- Decompiled sources of other mods stay out of the repository.
 
 ## Required release workflow
 

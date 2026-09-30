@@ -4,6 +4,7 @@ import com.fs.starfarer.api.BaseModPlugin;
 
 import lunalib.lunaSettings.LunaSettings;
 import lunalib.lunaSettings.LunaSettingsListener;
+import omegacoreeverywhere.effects.OmegaEffects;
 
 public class OmegaCoreEverywherePlugin extends BaseModPlugin {
 
@@ -20,6 +21,23 @@ public class OmegaCoreEverywherePlugin extends BaseModPlugin {
     @Override
     public void onGameLoad(boolean newGame) {
         OmegaDrops.apply();
+        OmegaEffects.install();
+    }
+
+    /** Every Omega effect comes off before a save and goes back on after, so saves stay clean. */
+    @Override
+    public void beforeGameSave() {
+        OmegaEffects.suspend();
+    }
+
+    @Override
+    public void afterGameSave() {
+        OmegaEffects.resume();
+    }
+
+    @Override
+    public void onGameSaveFailed() {
+        OmegaEffects.resume();
     }
 
     /** A changed slider takes effect at once, without reloading the save. */
