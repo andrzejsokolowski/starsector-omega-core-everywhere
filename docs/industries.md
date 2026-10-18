@@ -33,11 +33,13 @@ nothing more.
 **Buildings from mods not on this sheet:** if they make commodities, they get the production
 effect automatically. Otherwise nothing.
 
-**Where the effect is shown:** the core picker ("choose an AI core") keeps saying "No effect"
-for Omega. That text is written inside each building, not in a shared table, and changing it means
-replacing every building, which breaks other mods and existing colonies. The real Omega effect is
-shown in the building's own tooltip instead, under an "Omega core" heading. Buildings that draw
-their whole tooltip themselves (IndEvo's Orbital Artillery) do not show it.
+**Where the effect is shown:** every building writes "Omega Core. No effect." itself, in the core
+picker ("choose an AI core") and in its tooltip's Items section. Replacing the buildings would break
+other mods and existing colonies, so the mod rewrites that line on screen instead: it names the
+effect, or its first sentence when the whole effect does not fit in two lines. When the line cannot
+hold the whole effect, or cannot be found, the tooltip adds it under an "Omega core" heading.
+Buildings with no effect keep the game's "No effect". Buildings that draw their whole tooltip
+themselves (IndEvo's Orbital Artillery) show nothing in the tooltip, only in the picker.
 
 **Stacking:** income multipliers from different buildings multiply each other (Commerce and a
 Resort Center on one colony give ×4). The Supercomputer's ×1.5 and the research ×4 count once.

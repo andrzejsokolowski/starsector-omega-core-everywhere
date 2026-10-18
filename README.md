@@ -12,8 +12,9 @@ Install an Omega core the same way as any other AI core. On your own colonies:
 - **Buildings that make commodities** make twice as much for half the demand, at double the upkeep.
 - **Other buildings** get an effect of their own: doubled population growth, doubled patrol fleets,
   ground defenses ×10, stations that shrug off disruption, monthly deliveries into storage, and so on.
-- The building's tooltip says what its Omega core does. The core picker still says "No effect"; that
-  line belongs to the building and cannot be changed from outside.
+- The core picker and the building's tooltip say what the Omega core does, where the game would say
+  "No effect". An effect too long for that line gets a short version there, and the tooltip shows it
+  in full under an "Omega core" heading.
 
 Buildings from Industrial Evolution, AoTD Vaults of Knowledge and Terraforming & Station
 Construction are covered too. None of those mods is required, and their effects only exist while

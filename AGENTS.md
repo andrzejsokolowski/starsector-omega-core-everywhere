@@ -40,7 +40,14 @@ workflow below.
   need no TASC classes.
 - `src/omegacoreeverywhere/effects/Training` - the Academy effect: officer levels, the
   `oce_omega_tutelage` skill, Hypercognition for administrators.
-- `src/omegacoreeverywhere/effects/OmegaTooltip` - adds the "Omega core" section to building tooltips.
+- `src/omegacoreeverywhere/effects/NoEffectText` - rewrites the game's "Omega Core. No effect." line
+  to name the effect, if it fits in two lines (else its first sentence, else a pointer).
+- `src/omegacoreeverywhere/effects/OmegaTooltip` - rewrites that line in a building's tooltip while
+  the tooltip is made; adds the "Omega core" section only when the line cannot hold the whole effect.
+- `src/omegacoreeverywhere/effects/CorePickerText` - transient script, runs while paused: walks the
+  screen and rewrites the line in the core picker for the building each row keeps.
+- `src/omegacoreeverywhere/effects/Reflect` - the only reflection: method handles over
+  `java.lang.reflect` classes fetched by name, as in StopStackingMe's UI framework.
 - `src/omegacoreeverywhere/skills/OmegaTutelage` - the skill effect, registered in
   `data/characters/skills/`.
 - `docs/industries.md` - every building that takes an AI core and its Omega effect.
@@ -54,6 +61,9 @@ workflow below.
   instead. The one exception is the Supercomputer's stretched core lifetime, kept on purpose.
 - Building needs IndEvo and VoK installed (`compileOnly` in `build.gradle`); playing does not.
 - Decompiled sources of other mods stay out of the repository.
+- No class may name a `java.lang.reflect` type (`checkNoForbiddenApis` fails the build). Reading
+  the game's screens goes through `Reflect`, and every screen change must fail safe: on any error,
+  log once, stop, and leave the game's own text.
 
 ## Required release workflow
 

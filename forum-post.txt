@@ -28,7 +28,7 @@ The code is fully open source. You don't have to credit me. Claude Code built th
 [li]Install an Omega core like any other AI core, on any building that takes one.[/li]
 [li][b]Production buildings:[/b] production ×2, demand ×0.5, upkeep ×2.[/li]
 [li][b]Everything else:[/b] an effect of its own, listed below. These keep the usual −25% upkeep of an AI core.[/li]
-[li]Each building's tooltip shows what its Omega core does, under an "Omega core" heading.[/li]
+[li]The core picker and each building's tooltip show what the Omega core does, where the game would say "No effect".[/li]
 [li]Buildings from other mods get the production effect if they make commodities.[/li]
 [li]Only on your own colonies, and only while the building is working.[/li]
 [/list]
@@ -106,8 +106,8 @@ The code is fully open source. You don't have to credit me. Claude Code built th
 Yes. That is half of what it is for. A destroyed Omega ship can drop its core: 33% for a frigate, up to always for a capital. The chance is in LunaLib's settings.
 [b]And with Astral Ascension installed?[/b]
 Astral Ascension keeps control of the drops and this mod's drop settings do nothing. The building effects work either way.
-[b]The core picker says "No effect" for the Omega core.[/b]
-That line is written inside each building and cannot be changed without replacing the building. The building's own tooltip shows the real effect.
+[b]The core picker still says "No effect" for the Omega core.[/b]
+That is right for the buildings marked "No effect" above. Anywhere else, a Starsector update has probably changed the picker; the building's tooltip then shows the effect under an "Omega core" heading.
 [b]Do I need Industrial Evolution, Vaults of Knowledge or TASC?[/b]
 No. Their buildings only get Omega effects while that mod is installed. TASC is supported in its AoTD version.
 [b]Do bonuses stack?[/b]
@@ -123,5 +123,6 @@ Vaults of Knowledge does not let any AI core into it, so there is nothing to put
 Omega core drops were first done by [b]Astral Ascension[/b] by [b]Planetace[/b]. This mod is written from scratch and uses none of its code.
 [/spoiler]
 [spoiler=Version log]
+0.2.1 — the core picker and building tooltips show the Omega core's effect instead of "No effect".
 0.2.0 — first release: Omega core drops, Omega core effects in colony buildings for the base game, Industrial Evolution, Vaults of Knowledge and TASC, and the fix for the Industrial Evolution Supercomputer crash.
 [/spoiler]

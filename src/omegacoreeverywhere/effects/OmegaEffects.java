@@ -91,11 +91,13 @@ public final class OmegaEffects implements EveryFrameScript, EconomyTickListener
     public static void install() {
         SectorAPI sector = Global.getSector();
         sector.removeTransientScriptsOfClass(OmegaEffects.class);
+        sector.removeTransientScriptsOfClass(CorePickerText.class);
         sector.getListenerManager().removeListenerOfClass(OmegaEffects.class);
         sector.getListenerManager().removeListenerOfClass(OmegaTooltip.class);
 
         current = new OmegaEffects();
         sector.addTransientScript(current);
+        sector.addTransientScript(new CorePickerText());
         sector.getListenerManager().addListener(current, true);
         sector.getListenerManager().addListener(new OmegaTooltip(), true);
     }
