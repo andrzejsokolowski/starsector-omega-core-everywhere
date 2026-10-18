@@ -6,6 +6,15 @@ For requested gameplay changes and bug fixes, complete the release workflow unle
 Questions, investigations, and instruction-only changes do not require a new version or tag.
 Respect tool approval decisions. These instructions do not change sandbox permissions.
 
+## Notion
+
+Tasks, history and test lists: the **Omega Core Everywhere board** in Andrzej's Notion, under
+**Starsector mods** (`collection://ce636e73-83ef-4b54-a15c-7b73267bb397`). Working rules and game
+API notes: **Claude Information** (`collection://7bf9b1d6-b9e5-4b62-87f1-757bbaa51919`), starting
+with "Start here: working on Starsector mods through Notion". Read the board before working, give
+every task a ticket (ticket ids start with OCE) and keep it current. The Notion tools are deferred:
+load them with ToolSearch first.
+
 ## First release
 
 No GitHub Release exists yet. Andrzej decides when the first one ships (planned: once the
