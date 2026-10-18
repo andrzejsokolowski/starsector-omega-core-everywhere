@@ -8,13 +8,14 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import com.fs.starfarer.api.EveryFrameScript;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.campaign.SectorAPI;
 import com.fs.starfarer.api.campaign.econ.Industry;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.campaign.econ.SubmarketAPI;
+import com.fs.starfarer.api.campaign.listeners.CampaignUIRenderingListener;
+import com.fs.starfarer.api.combat.ViewportAPI;
 import com.fs.starfarer.api.impl.campaign.ids.Commodities;
 import com.fs.starfarer.api.impl.campaign.ids.Submarkets;
 import com.fs.starfarer.api.ui.LabelAPI;
@@ -28,34 +29,33 @@ import omegacoreeverywhere.Settings;
 /**
  * Puts the Omega effect into the core picker, the dialog a building opens to choose its AI core.
  *
- * The game builds the picker when it opens and gives no mod a say in it. So while the game is paused
- * on a screen that can show it, this walks what is on screen, finds the picker's "No effect" lines
- * and has {@link NoEffectText} rewrite each one for its building, which the line's row, the
- * picker's header and the picker itself all keep.
+ * The game builds the picker when it opens and gives no mod a say in it. So on every frame a screen
+ * that can show it is drawn, this walks what is on screen, finds the picker's "No effect" lines and
+ * has {@link NoEffectText} rewrite each one for its building, which the line's row, the picker's
+ * header and the picker itself all keep.
+ *
+ * It hangs off the campaign screen's drawing, not its clock: with a dialog open the game stops
+ * running scripts on frames where no time passes, but it still draws them. The layer this is called
+ * from is drawn before any dialog on top of it, so a rewritten line shows on the same frame.
  *
  * If anything here fails, it logs once and stops until the game is loaded again; the picker then
  * shows the game's own text, nothing worse.
  */
-final class CorePickerText implements EveryFrameScript {
+final class CorePickerText implements CampaignUIRenderingListener {
 
     private static final int MAX_DEPTH = 40;
     private static final Logger log = Global.getLogger(CorePickerText.class);
 
     private boolean failed;
+    /** One line each in starsector.log, so a picker that keeps its old text can be traced. */
+    private boolean loggedWatching, loggedRewrite, loggedOrphan;
 
     @Override
-    public boolean isDone() {
-        return false;
-    }
-
-    /** The picker only exists while the game is paused. */
-    @Override
-    public boolean runWhilePaused() {
-        return true;
+    public void renderInUICoordsBelowUI(ViewportAPI viewport) {
     }
 
     @Override
-    public void advance(float amount) {
+    public void renderInUICoordsAboveUIBelowTooltips(ViewportAPI viewport) {
         if (failed) return;
         try {
             run();
@@ -66,9 +66,13 @@ final class CorePickerText implements EveryFrameScript {
         }
     }
 
+    @Override
+    public void renderInUICoordsAboveUIAndTooltips(ViewportAPI viewport) {
+    }
+
     private void run() {
         SectorAPI sector = Global.getSector();
-        if (sector == null || !sector.isPaused() || !Settings.effectsEnabled()) return;
+        if (sector == null || !Settings.effectsEnabled()) return;
         if (!(AppDriver.getInstance().getCurrentState() instanceof CampaignState)) return;
         CampaignState state = (CampaignState) AppDriver.getInstance().getCurrentState();
 
@@ -76,6 +80,10 @@ final class CorePickerText implements EveryFrameScript {
         Object dialog = Reflect.call(state, "getEncounterDialog");
         if (dialog == null && sector.getCampaignUI().getCurrentCoreTab() == null) return;
         if (!omegaAround(sector)) return;
+        if (!loggedWatching) {
+            loggedWatching = true;
+            log.info("Omega Core Everywhere: looking for the core picker on the colony screen");
+        }
 
         Set<Object> seen = Collections.newSetFromMap(new IdentityHashMap<>());
         List<UIComponentAPI> path = new ArrayList<>();
@@ -90,7 +98,15 @@ final class CorePickerText implements EveryFrameScript {
         if (node instanceof LabelAPI) {
             LabelAPI label = (LabelAPI) node;
             if (NoEffectText.isOmegaNoEffect(label.getText())) {
-                NoEffectText.rewrite(label, owner(path), "Effect shown in the building's tooltip.");
+                Industry ind = owner(path);
+                NoEffectText.Fit fit = NoEffectText.rewrite(label, ind, "Effect shown in the building's tooltip.");
+                if (ind == null && !loggedOrphan) {
+                    loggedOrphan = true;
+                    log.warn("Omega Core Everywhere: found \"" + label.getText() + "\" with no building above it");
+                } else if (ind != null && !loggedRewrite) {
+                    loggedRewrite = true;
+                    log.info("Omega Core Everywhere: core picker line for " + ind.getId() + ": " + fit);
+                }
             }
             return;
         }
