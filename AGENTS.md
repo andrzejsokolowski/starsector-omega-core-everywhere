@@ -15,11 +15,10 @@ with "Start here: working on Starsector mods through Notion". Read the board bef
 every task a ticket (ticket ids start with OCE) and keep it current. The Notion tools are deferred:
 load them with ToolSearch first.
 
-## First release
+## Releases
 
-No GitHub Release exists yet. Andrzej decides when the first one ships (planned: once the
-Omega industry effects are in). Until then, build and verify the local ZIP and push commits, but do
-not tag or publish a release without his go-ahead.
+0.2.0 is the first published GitHub Release (2026-10-18). Later changes follow the release
+workflow below.
 
 ## Layout
 
@@ -81,8 +80,8 @@ Do not overwrite published assets, replace tags, or mark older releases as lates
 ## Update metadata
 
 Keep mod_info.json, omega_core_everywhere.version, and data/config/version/version_files.csv consistent.
-There is no forum topic yet. When one exists, add its number to both metadata files
-(a string in mod_info.json, a number in the .version file). Never invent one.
+The forum topic is https://fractalsoftworks.com/forum/index.php?topic=36168.0. Keep its number in
+both metadata files (a string in mod_info.json, a number in the .version file).
 Use this update URL in updateCheckURL and masterVersionFile:
 
 https://raw.githubusercontent.com/andrzejsokolowski/starsector-omega-core-everywhere/main/omega_core_everywhere.version

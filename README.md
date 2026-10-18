@@ -1,5 +1,7 @@
 # Omega Core Everywhere
 
+[Forum topic](https://fractalsoftworks.com/forum/index.php?topic=36168.0)
+
 Omega cores drop from destroyed Omega ships, and do something in every colony building that takes
 an AI core.
 
