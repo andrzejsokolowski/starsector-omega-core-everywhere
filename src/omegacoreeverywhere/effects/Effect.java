@@ -18,8 +18,7 @@ enum Effect {
     /** Buildings from Andrzej's own mods that already have an Omega effect of their own. */
     OWN(null),
     NONE("No additional effect."),
-    PRODUCTION("Production %s, demand %s, upkeep %s. The facility struggles to keep up with the core.",
-            "×2", "×0.5", "×2"),
+    PRODUCTION("Production %s, demand %s, upkeep %s.", "×2", "×0.5", "×2"),
 
     GROWTH("Population growth %s.", "×2"),
     CREW("%s crew delivered to this colony's storage every month.", "1,000"),
@@ -44,8 +43,7 @@ enum Effect {
             "maximum level", "Omega Tutelage", "Hypercognition"),
     MUSEUM("Museum income %s.", "×2"),
     ARTILLERY("Fires %s as often. Its station always fights at %s combat readiness.", "twice", "100%"),
-    FORGE("Monthly output %s, demand %s, upkeep %s. The facility struggles to keep up with the core.",
-            "×2", "×0.5", "×2"),
+    FORGE("Monthly output %s, demand %s, upkeep %s.", "×2", "×0.5", "×2"),
 
     RESORT("Colony income %s. Hazard rating %s.", "×2", "-25%"),
     TERMINUS("Accessibility raised to %s.", "1,000%"),
@@ -64,6 +62,11 @@ enum Effect {
 
     final String text;
     final String[] highlights;
+    /**
+     * A shorter wording for lines with little room, such as the core picker, or null where the text
+     * is short already. Takes the same highlights in the same order.
+     */
+    String brief;
 
     Effect(String text, String... highlights) {
         this.text = text;
@@ -77,6 +80,19 @@ enum Effect {
     }
 
     static {
+        CREW.brief = "%s crew every month.";
+        GROUND_DEFENSES.brief = "Ground defenses %s, %s marines every month.";
+        STATION.brief = "Recovers from disruption at once, always at %s combat readiness.";
+        SHIELD.brief = "Every building here recovers from disruption at once.";
+        WAYSTATION.brief = "%s fuel, supplies, heavy machinery, metals and food every month.";
+        BUREAU.brief = "Output and demand rise per matching building within %s light-years, up to %s.";
+        SUPERCOMPUTER.brief = "Income %s for every colony in this system. Never burns out.";
+        ACADEMY.brief = "Officers: %s and %s. Administrators: %s.";
+        DOCKS.brief = "Ships in the docks are fully restored at once, for %s.";
+        ARTILLERY.brief = "Fires %s as often, its station always at %s combat readiness.";
+        RESEARCH.brief = "Research %s as fast, %s research databanks every month.";
+        LIMELIGHT.brief = "Network income %s, no production penalty.";
+        KLETKA.brief = "One %s every month.";
         put(OWN, "oddisz_clone_vat_experiments", "oddisz_cloning", "oddisz_cloning_megafactory",
                 "RePA_ReverseEngPhase1Ind", "RePA_ReverseEngPhase2Ind", "RePA_ReverseEngPhase3Ind");
 

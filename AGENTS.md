@@ -25,8 +25,8 @@ small quota that runs out. The workspace `AGENTS.md` has the full routine.
 
 ## Releases
 
-0.2.0 is the first published GitHub Release (2026-10-18). Later changes follow the release
-workflow below.
+0.2.0 is the first published GitHub Release (2026-10-18), 1.0.0 the first stable one (same day,
+after Andrzej confirmed the core picker in game). Later changes follow the release workflow below.
 
 ## Layout
 

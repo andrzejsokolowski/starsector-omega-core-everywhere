@@ -8,7 +8,7 @@ WHAT DOES THIS MOD DO?
 - An Omega core in a colony building finally does something. Usually something absurd.
 
 
-Production buildings make twice as much for half the demand, at double the upkeep: the facility can barely keep up with the core.
+Production buildings make twice as much for half the demand, at double the upkeep.
 Every other building gets an Omega effect of its own, from doubled patrol fleets to stations that shrug off disruption.
 Covers the base game, Industrial Evolution, AoTD Vaults of Knowledge and Terraforming & Station Construction. None of them is required.
 
@@ -28,7 +28,7 @@ The code is fully open source. You don't have to credit me. Claude Code built th
 [li]Install an Omega core like any other AI core, on any building that takes one.[/li]
 [li][b]Production buildings:[/b] production ×2, demand ×0.5, upkeep ×2.[/li]
 [li][b]Everything else:[/b] an effect of its own, listed below. These keep the usual −25% upkeep of an AI core.[/li]
-[li]The core picker and each building's tooltip show what the Omega core does, where the game would say "No effect".[/li]
+[li]The core picker and each building's tooltip show what the Omega core does, where the game would say "No effect". A long effect is shortened in the picker; the building's tooltip shows it in full.[/li]
 [li]Buildings from other mods get the production effect if they make commodities.[/li]
 [li]Only on your own colonies, and only while the building is working.[/li]
 [/list]
@@ -106,6 +106,8 @@ The code is fully open source. You don't have to credit me. Claude Code built th
 Yes. That is half of what it is for. A destroyed Omega ship can drop its core: 33% for a frigate, up to always for a capital. The chance is in LunaLib's settings.
 [b]And with Astral Ascension installed?[/b]
 Astral Ascension keeps control of the drops and this mod's drop settings do nothing. The building effects work either way.
+[b]And with Astral Ascension Renewed?[/b]
+They work together: Astral Ascension Renewed adds the Omega core administrator and colonies past size 10, this mod covers the buildings. This mod's drop settings are used.
 [b]The core picker still says "No effect" for the Omega core.[/b]
 That is right for the buildings marked "No effect" above. Anywhere else, a Starsector update has probably changed the picker; the building's tooltip then shows the effect under an "Omega core" heading.
 [b]Do I need Industrial Evolution, Vaults of Knowledge or TASC?[/b]
@@ -123,9 +125,7 @@ Vaults of Knowledge does not let any AI core into it, so there is nothing to put
 Omega core drops were first done by [b]Astral Ascension[/b] by [b]Planetace[/b]. This mod is written from scratch and uses none of its code.
 [/spoiler]
 [spoiler=Version log]
-0.2.4 — the core picker shows the effect (the search now reaches inside the picker).
-0.2.3 — less work in menus: only an open building dialog is searched.
-0.2.2 — the core picker now really shows the effect.
-0.2.1 — the core picker and building tooltips show the Omega core's effect instead of "No effect".
+1.0.0 — long effects get a shorter wording in the core picker, with the full text in the building's tooltip. Production buildings no longer say the facility struggles to keep up.
+0.2.1 to 0.2.4 — the core picker and building tooltips show the Omega core's effect instead of "No effect".
 0.2.0 — first release: Omega core drops, Omega core effects in colony buildings for the base game, Industrial Evolution, Vaults of Knowledge and TASC, and the fix for the Industrial Evolution Supercomputer crash.
 [/spoiler]

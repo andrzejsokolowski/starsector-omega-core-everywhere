@@ -310,7 +310,7 @@ public final class OmegaEffects implements EveryFrameScript, EconomyTickListener
         // is measured from the uncut upkeep, so that cut is divided back out.
         StatMod cut = ind.getUpkeep().getMultStatMod("ind_core");
         float cutBy = cut != null && cut.getValue() > 0f ? cut.getValue() : 1f;
-        ledger.mult(ind.getUpkeep(), UPKEEP, 2f / cutBy, CORE + " straining the facility");
+        ledger.mult(ind.getUpkeep(), UPKEEP, 2f / cutBy, CORE);
     }
 
     private static void fullReadiness(CampaignFleetAPI fleet) {

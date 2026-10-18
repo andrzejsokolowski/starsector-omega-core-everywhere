@@ -23,7 +23,7 @@ Modded buildings often replace these with their own effects; those are listed pe
 
 - Production ×2.
 - Demand ×0.5.
-- Upkeep ×2. The industry struggles to keep up with the core. This replaces the usual −25%.
+- Upkeep ×2. This replaces the usual −25%.
 
 **Buildings with a unique effect** keep the usual −25% upkeep from having an AI core.
 
@@ -36,7 +36,7 @@ effect automatically. Otherwise nothing.
 **Where the effect is shown:** every building writes "Omega Core. No effect." itself, in the core
 picker ("choose an AI core") and in its tooltip's Items section. Replacing the buildings would break
 other mods and existing colonies, so the mod rewrites that line on screen instead: it names the
-effect, or its first sentence when the whole effect does not fit in two lines. When the line cannot
+effect, or a shorter wording of it when the whole effect does not fit in two lines. When the line cannot
 hold the whole effect, or cannot be found, the tooltip adds it under an "Omega core" heading.
 Buildings with no effect keep the game's "No effect". Buildings that draw their whole tooltip
 themselves (IndEvo's Orbital Artillery) show nothing in the tooltip, only in the picker.

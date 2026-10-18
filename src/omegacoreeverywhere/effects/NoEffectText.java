@@ -66,7 +66,7 @@ final class NoEffectText {
 
     /**
      * Rewrites one of the game's "No effect" lines for this building: the whole effect if it fits,
-     * else its first sentence, else the fallback (null leaves the line alone).
+     * else its short wording, else its first sentence, else the fallback (null leaves the line alone).
      */
     static Fit rewrite(LabelAPI label, Industry ind, String fallback) {
         String text = label.getText();
@@ -79,6 +79,13 @@ final class NoEffectText {
         if (fits(label, prefix + body)) {
             set(label, prefix + body, effect.highlights);
             return Fit.FULL;
+        }
+        if (effect.brief != null) {
+            String brief = String.format(effect.brief, (Object[]) effect.highlights);
+            if (fits(label, prefix + brief)) {
+                set(label, prefix + brief, effect.highlights);
+                return Fit.PARTIAL;
+            }
         }
         int end = body.indexOf(". ");
         if (end > 0 && fits(label, prefix + body.substring(0, end + 1))) {
