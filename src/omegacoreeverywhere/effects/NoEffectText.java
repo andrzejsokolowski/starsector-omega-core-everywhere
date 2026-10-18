@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
 import org.apache.log4j.Logger;
 
@@ -37,6 +38,12 @@ final class NoEffectText {
     /** The game sized the line for one line of text, and the core's icon beside it leaves room for two. */
     private static final int MAX_LINES = 2;
     private static final int MAX_DEPTH = 40;
+    /**
+     * Where the game keeps parts of a panel off its child list: a tooltip's paragraphs sit on its
+     * inner panel, a dialog's body on its inner panel, and a table's rows behind the buttons that
+     * draw them.
+     */
+    private static final String[] HIDDEN_PARTS = {"getPanel", "getInnerPanel", "getRows"};
 
     private static final Logger log = Global.getLogger(NoEffectText.class);
     private static boolean failed;
@@ -91,7 +98,8 @@ final class NoEffectText {
         if (failed) return Fit.UNTOUCHED;
         try {
             List<LabelAPI> lines = new ArrayList<>();
-            find(tooltip, lines, Collections.newSetFromMap(new IdentityHashMap<>()), 0);
+            visit(tooltip, new ArrayList<>(), Collections.newSetFromMap(new IdentityHashMap<>()),
+                    (line, path) -> lines.add(line));
             Fit result = Fit.UNTOUCHED;
             for (LabelAPI line : lines) {
                 Fit fit = rewrite(line, ind, "See Omega core below.");
@@ -107,18 +115,32 @@ final class NoEffectText {
         }
     }
 
-    /** Collects the game's "No effect" lines for an Omega core anywhere under a panel. */
-    static void find(UIComponentAPI node, List<LabelAPI> out, Set<Object> seen, int depth) {
-        if (depth > MAX_DEPTH || !seen.add(node)) return;
+    /**
+     * Hands every one of the game's "No effect" lines for an Omega core under a panel to the visitor,
+     * with the panels above it (the closest last).
+     */
+    static void visit(UIComponentAPI node, List<UIComponentAPI> path, Set<Object> seen,
+                      BiConsumer<LabelAPI, List<UIComponentAPI>> visitor) {
+        if (path.size() > MAX_DEPTH || !seen.add(node)) return;
         if (node instanceof LabelAPI) {
-            if (isOmegaNoEffect(((LabelAPI) node).getText())) out.add((LabelAPI) node);
+            LabelAPI label = (LabelAPI) node;
+            if (isOmegaNoEffect(label.getText())) visitor.accept(label, path);
             return;
         }
         if (!(node instanceof UIPanelAPI)) return;
-        for (UIComponentAPI child : Reflect.children((UIPanelAPI) node)) find(child, out, seen, depth + 1);
-        // A tooltip keeps its paragraphs on an inner panel.
-        Object inner = Reflect.call(node, "getPanel");
-        if (inner instanceof UIPanelAPI) find((UIPanelAPI) inner, out, seen, depth + 1);
+        path.add(node);
+        for (UIComponentAPI child : Reflect.children((UIPanelAPI) node)) visit(child, path, seen, visitor);
+        for (String part : HIDDEN_PARTS) {
+            Object hidden = Reflect.call(node, part);
+            if (hidden instanceof UIComponentAPI) {
+                visit((UIComponentAPI) hidden, path, seen, visitor);
+            } else if (hidden instanceof List) {
+                for (Object item : (List<?>) hidden) {
+                    if (item instanceof UIComponentAPI) visit((UIComponentAPI) item, path, seen, visitor);
+                }
+            }
+        }
+        path.remove(path.size() - 1);
     }
 
     private static boolean fits(LabelAPI label, String text) {

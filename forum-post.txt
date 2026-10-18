@@ -123,6 +123,7 @@ Vaults of Knowledge does not let any AI core into it, so there is nothing to put
 Omega core drops were first done by [b]Astral Ascension[/b] by [b]Planetace[/b]. This mod is written from scratch and uses none of its code.
 [/spoiler]
 [spoiler=Version log]
+0.2.4 — the core picker shows the effect (the search now reaches inside the picker).
 0.2.3 — less work in menus: only an open building dialog is searched.
 0.2.2 — the core picker now really shows the effect.
 0.2.1 — the core picker and building tooltips show the Omega core's effect instead of "No effect".

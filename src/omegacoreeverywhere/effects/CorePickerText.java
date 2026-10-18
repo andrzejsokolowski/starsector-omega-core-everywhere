@@ -40,7 +40,6 @@ import omegacoreeverywhere.Settings;
  */
 final class CorePickerText implements CampaignUIRenderingListener {
 
-    private static final int MAX_DEPTH = 40;
     private static final Logger log = Global.getLogger(CorePickerText.class);
 
     private boolean failed;
@@ -89,31 +88,21 @@ final class CorePickerText implements CampaignUIRenderingListener {
                 log.info("Omega Core Everywhere: a building's dialog is open, looking for the core picker in it");
             }
             if (seen == null) seen = Collections.newSetFromMap(new IdentityHashMap<>());
-            walk(child, new ArrayList<>(), seen);
+            NoEffectText.visit(child, new ArrayList<>(), seen, this::rewrite);
         }
     }
 
-    private void walk(UIComponentAPI node, List<UIComponentAPI> path, Set<Object> seen) {
-        if (path.size() > MAX_DEPTH || !seen.add(node)) return;
-        if (node instanceof LabelAPI) {
-            LabelAPI label = (LabelAPI) node;
-            if (NoEffectText.isOmegaNoEffect(label.getText())) {
-                Industry ind = owner(path);
-                NoEffectText.Fit fit = NoEffectText.rewrite(label, ind, "Effect shown in the building's tooltip.");
-                if (ind == null && !loggedOrphan) {
-                    loggedOrphan = true;
-                    log.warn("Omega Core Everywhere: found \"" + label.getText() + "\" with no building above it");
-                } else if (ind != null && !loggedRewrite) {
-                    loggedRewrite = true;
-                    log.info("Omega Core Everywhere: core picker line for " + ind.getId() + ": " + fit);
-                }
-            }
-            return;
+    private void rewrite(LabelAPI label, List<UIComponentAPI> path) {
+        String before = label.getText();
+        Industry ind = owner(path);
+        NoEffectText.Fit fit = NoEffectText.rewrite(label, ind, "Effect shown in the building's tooltip.");
+        if (ind == null && !loggedOrphan) {
+            loggedOrphan = true;
+            log.warn("Omega Core Everywhere: found \"" + before + "\" with no building above it");
+        } else if (ind != null && !loggedRewrite) {
+            loggedRewrite = true;
+            log.info("Omega Core Everywhere: core picker line for " + ind.getId() + ": " + fit);
         }
-        if (!(node instanceof UIPanelAPI)) return;
-        path.add(node);
-        for (UIComponentAPI child : Reflect.children((UIPanelAPI) node)) walk(child, path, seen);
-        path.remove(path.size() - 1);
     }
 
     /** The building of the closest panel above the line that keeps one. */

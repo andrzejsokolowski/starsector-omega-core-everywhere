@@ -56,7 +56,9 @@ workflow below.
   frame of a colony screen, looks over the screen panel's direct children and searches only those
   that keep a building (the picker and the building's dialog both open there) to rewrite the line
   for the building each row keeps. Not a script: with a dialog open, scripts do not run every frame.
-  Never walk the whole screen per frame.
+  Never walk the whole screen per frame. The search (`NoEffectText.visit`) must also follow
+  `getInnerPanel` (a dialog's body hangs off its frame with `setNext`, not as a child), `getRows`
+  (table rows sit behind buttons) and `getPanel` (a tooltip's paragraphs).
 - `src/omegacoreeverywhere/effects/Reflect` - the only reflection: method handles over
   `java.lang.reflect` classes fetched by name, as in StopStackingMe's UI framework.
 - `src/omegacoreeverywhere/skills/OmegaTutelage` - the skill effect, registered in
