@@ -53,8 +53,10 @@ workflow below.
 - `src/omegacoreeverywhere/effects/OmegaTooltip` - rewrites that line in a building's tooltip while
   the tooltip is made; adds the "Omega core" section only when the line cannot hold the whole effect.
 - `src/omegacoreeverywhere/effects/CorePickerText` - transient UI rendering listener: on every drawn
-  frame of a colony screen, walks the screen and rewrites the line in the core picker for the
-  building each row keeps. Not a script: with a dialog open, scripts do not run on every frame.
+  frame of a colony screen, looks over the screen panel's direct children and searches only those
+  that keep a building (the picker and the building's dialog both open there) to rewrite the line
+  for the building each row keeps. Not a script: with a dialog open, scripts do not run every frame.
+  Never walk the whole screen per frame.
 - `src/omegacoreeverywhere/effects/Reflect` - the only reflection: method handles over
   `java.lang.reflect` classes fetched by name, as in StopStackingMe's UI framework.
 - `src/omegacoreeverywhere/skills/OmegaTutelage` - the skill effect, registered in

@@ -9,15 +9,10 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.campaign.SectorAPI;
 import com.fs.starfarer.api.campaign.econ.Industry;
-import com.fs.starfarer.api.campaign.econ.MarketAPI;
-import com.fs.starfarer.api.campaign.econ.SubmarketAPI;
 import com.fs.starfarer.api.campaign.listeners.CampaignUIRenderingListener;
 import com.fs.starfarer.api.combat.ViewportAPI;
-import com.fs.starfarer.api.impl.campaign.ids.Commodities;
-import com.fs.starfarer.api.impl.campaign.ids.Submarkets;
 import com.fs.starfarer.api.ui.LabelAPI;
 import com.fs.starfarer.api.ui.UIComponentAPI;
 import com.fs.starfarer.api.ui.UIPanelAPI;
@@ -29,10 +24,12 @@ import omegacoreeverywhere.Settings;
 /**
  * Puts the Omega effect into the core picker, the dialog a building opens to choose its AI core.
  *
- * The game builds the picker when it opens and gives no mod a say in it. So on every frame a screen
- * that can show it is drawn, this walks what is on screen, finds the picker's "No effect" lines and
- * has {@link NoEffectText} rewrite each one for its building, which the line's row, the picker's
- * header and the picker itself all keep.
+ * The game builds the picker when it opens and gives no mod a say in it. The colony screen opens a
+ * building's dialog on the top level of the campaign screen, and that dialog opens the picker beside
+ * it. So on every drawn frame of a colony screen this glances over that top level, a short list, and
+ * only searches what keeps a building: the picker and the building's dialog, while they are open.
+ * There it finds the "No effect" lines and has {@link NoEffectText} rewrite each one for its
+ * building, which the line's row, the picker's header and the picker itself all keep.
  *
  * It hangs off the campaign screen's drawing, not its clock: with a dialog open the game stops
  * running scripts on frames where no time passes, but it still draws them. The layer this is called
@@ -48,7 +45,7 @@ final class CorePickerText implements CampaignUIRenderingListener {
 
     private boolean failed;
     /** One line each in starsector.log, so a picker that keeps its old text can be traced. */
-    private boolean loggedWatching, loggedRewrite, loggedOrphan;
+    private boolean loggedFound, loggedRewrite, loggedOrphan;
 
     @Override
     public void renderInUICoordsBelowUI(ViewportAPI viewport) {
@@ -72,24 +69,27 @@ final class CorePickerText implements CampaignUIRenderingListener {
 
     private void run() {
         SectorAPI sector = Global.getSector();
-        if (sector == null || !Settings.effectsEnabled()) return;
-        if (!(AppDriver.getInstance().getCurrentState() instanceof CampaignState)) return;
+        if (sector == null || !(AppDriver.getInstance().getCurrentState() instanceof CampaignState)) return;
         CampaignState state = (CampaignState) AppDriver.getInstance().getCurrentState();
 
-        // A colony screen is either inside the dialog of a market you are docked at, or a tab.
-        Object dialog = Reflect.call(state, "getEncounterDialog");
-        if (dialog == null && sector.getCampaignUI().getCurrentCoreTab() == null) return;
-        if (!omegaAround(sector)) return;
-        if (!loggedWatching) {
-            loggedWatching = true;
-            log.info("Omega Core Everywhere: looking for the core picker on the colony screen");
+        // A colony screen is either inside the dialog of a market you are docked at, or a tab. In
+        // flight neither is open and nothing more is looked at.
+        if (Reflect.call(state, "getEncounterDialog") == null && sector.getCampaignUI().getCurrentCoreTab() == null) {
+            return;
         }
+        Object screen = Reflect.call(state, "getScreenPanel");
+        if (!(screen instanceof UIPanelAPI)) return;
 
-        Set<Object> seen = Collections.newSetFromMap(new IdentityHashMap<>());
-        List<UIComponentAPI> path = new ArrayList<>();
-        for (Object root : new Object[] {Reflect.call(state, "getScreenPanel"), Reflect.call(state, "getCore"),
-                Reflect.call(dialog, "getCoreUI")}) {
-            if (root instanceof UIPanelAPI) walk((UIPanelAPI) root, path, seen);
+        Set<Object> seen = null;
+        for (UIComponentAPI child : Reflect.children((UIPanelAPI) screen)) {
+            if (!(child instanceof UIPanelAPI) || Reflect.industryOf(child) == null) continue;
+            if (!Settings.effectsEnabled()) return;
+            if (!loggedFound) {
+                loggedFound = true;
+                log.info("Omega Core Everywhere: a building's dialog is open, looking for the core picker in it");
+            }
+            if (seen == null) seen = Collections.newSetFromMap(new IdentityHashMap<>());
+            walk(child, new ArrayList<>(), seen);
         }
     }
 
@@ -123,20 +123,5 @@ final class CorePickerText implements CampaignUIRenderingListener {
             if (ind != null) return ind;
         }
         return null;
-    }
-
-    /** Without an Omega core in reach, no picker can be showing one, and the walk is skipped. */
-    private static boolean omegaAround(SectorAPI sector) {
-        CampaignFleetAPI fleet = sector.getPlayerFleet();
-        if (fleet != null && fleet.getCargo().getCommodityQuantity(Commodities.OMEGA_CORE) > 0f) return true;
-        for (MarketAPI market : sector.getEconomy().getMarketsCopy()) {
-            if (!market.isPlayerOwned()) continue;
-            for (Industry ind : market.getIndustries()) {
-                if (OmegaEffects.hasOmega(ind)) return true;
-            }
-            SubmarketAPI storage = market.getSubmarket(Submarkets.SUBMARKET_STORAGE);
-            if (storage != null && storage.getCargo().getCommodityQuantity(Commodities.OMEGA_CORE) > 0f) return true;
-        }
-        return false;
     }
 }
