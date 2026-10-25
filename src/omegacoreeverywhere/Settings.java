@@ -22,6 +22,15 @@ public final class Settings {
         return value == null ? DEFAULT_EFFECTS_ENABLED : value;
     }
 
+    static final float DEFAULT_CAPTAIN_TIMEFLOW = 25f;
+
+    /** Percent faster timeflow for a ship captained by one of the player's Omega cores. 0 is off. */
+    public static float captainTimeflow() {
+        Double value = LunaSettings.getDouble(OmegaCoreEverywherePlugin.MOD_ID, "oce_captain_timeflow");
+        if (value == null || value.isNaN()) return DEFAULT_CAPTAIN_TIMEFLOW;
+        return (float) Math.max(0d, Math.min(200d, value));
+    }
+
     static float dropChance() {
         Double value = LunaSettings.getDouble(OmegaCoreEverywherePlugin.MOD_ID, "oce_drop_chance");
         if (value == null || value.isNaN()) return DEFAULT_DROP_CHANCE;

@@ -2,5 +2,18 @@
 	# The game reads drop_prob_officer_<core id> when a destroyed ship's AI core can drop.
 	# Vanilla has no entry for the Omega core because it never drops. This is only the value
 	# used before a save loads: the LunaLib setting replaces it at every game load.
-	"drop_prob_officer_omega_core":0.33
+	"drop_prob_officer_omega_core":0.33,
+
+	# OCE_OmegaTurnIn, the Omega core turn-in.
+	"ruleCommandPackages":[
+		"omegacoreeverywhere.rulecmd",
+	],
+
+	"graphics":{
+		# Exotica Technologies draws exotic icons from this category. Unused without it.
+		"exotics":{
+			"SubsumedOmegaCore":"graphics/icons/cargo/ai_omega_core.png",
+			"OmegaSubcore":"graphics/icons/cargo/ai_omega_core.png",
+		},
+	},
 }

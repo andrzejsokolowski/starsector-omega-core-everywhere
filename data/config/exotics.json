@@ -1,0 +1,23 @@
+{
+	# Exotica Technologies merges this file into its own and loads these two only while it is installed.
+	"SubsumedOmegaCore": {
+		"name": "Subsumed Omega Core",
+		"exoticClass": "omegacoreeverywhere.exotica.SubsumedOmegaCore",
+		"conditions": [
+			{"id": "hullmods", "operator": "in", "expected": "automated", "cannotApplyReason": "The ship must be an automated ship."}
+		]
+	},
+	"OmegaSubcore": {
+		"name": "Omega Subcore",
+		"tag": "aiCore",
+		"hints": ["special"],
+		"exoticClass": "omegacoreeverywhere.exotica.OmegaSubcore",
+		"conditions": [
+			{"id": "hullmods", "operator": "notIn", "expected": "specialsphmod_alpha_core_upgrades", "cannotApplyReason": "The ship must not have an AI core already installed."},
+			{"id": "hullmods", "operator": "notIn", "expected": "specialsphmod_beta_core_upgrades", "cannotApplyReason": "The ship must not have an AI core already installed."},
+			{"id": "hullmods", "operator": "notIn", "expected": "specialsphmod_gamma_core_upgrades", "cannotApplyReason": "The ship must not have an AI core already installed."},
+			{"id": "hullmods", "operator": "notIn", "expected": "oce_omega_core_upgrades", "cannotApplyReason": "The ship must not have an AI core already installed."}
+		],
+		"valueMult": 5.0
+	}
+}

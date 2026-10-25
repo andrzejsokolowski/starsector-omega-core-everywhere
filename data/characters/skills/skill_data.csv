@@ -1,2 +1,3 @@
 id,name,order,tier,reqPoints,reqPointsPerExtraSkill,description,author,combat officer,admiral,admin,tags,icon,
 oce_omega_tutelage,Omega Tutelage,10002,0,,,"None of the lessons made sense at the time. In combat, it turns out they were all about time.",An Academy graduate,,,,npc_only,graphics/icons/cargo/ai_omega_core.png,
+oce_omega_timeflow,Omega Timeflow,10003,0,,,"It thinks faster than the ship can move, so the ship is made to keep up.",Omega core,,,,npc_only,graphics/icons/cargo/ai_omega_core.png,

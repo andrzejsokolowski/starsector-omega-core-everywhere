@@ -63,6 +63,24 @@ after Andrzej confirmed the core picker in game). Later changes follow the relea
   `java.lang.reflect` classes fetched by name, as in StopStackingMe's UI framework.
 - `src/omegacoreeverywhere/skills/OmegaTutelage` - the skill effect, registered in
   `data/characters/skills/`.
+- `src/omegacoreeverywhere/effects/Captains` - puts the `oce_omega_timeflow` skill
+  (`skills/OmegaTimeflow`, amount from the LunaLib setting `oce_captain_timeflow`) on every Omega core
+  captaining a ship in the player's fleet, through the `Ledger`. Enemy Omega ships never get it.
+- `src/omegacoreeverywhere/rulecmd/OCE_OmegaTurnIn` - the base game's `AICores` turn-in with the
+  Omega core's reputation x500. `data/campaign/rules.csv` routes `aiCores_selectCores` to it only while
+  the player carries an Omega core; `ruleCommandPackages` in `data/config/settings.json` registers the
+  package.
+- `src/omegacoreeverywhere/ships/OmegaArmamentSupport` - Armament Support System (Omega) for Special
+  Hullmod Upgrades (`mayu_specialupgrades`). Plain base game code: the Omega core is used up through
+  `getRequiredItem()`. Hidden at startup without that mod, known while its Alpha upgrade is
+  (`effects/ShipUpgrades`, held in the `Ledger`), follows its three LunaLib toggles.
+  `ships/OmegaCoreLoss` takes it off ships disabled or destroyed in combat.
+- `src/omegacoreeverywhere/exotica/` - the only classes that import Exotica Technologies:
+  `SubsumedOmegaCore`, `OmegaSubcore` and their helper `OmegaExotics`. Exotica loads the two exotics
+  from `data/config/exotics.json` (texts in `data/strings/strings.json`, icons under `graphics.exotics`
+  in `settings.json`). Nothing else may call into this package unless Exotica is enabled. The Omega
+  Subcore's OP discounts live in the hidden hull mod `ships/OmegaSubcoreHullmod`, which the exotic
+  adds and removes; `effects/ShipUpgrades` takes it off ships whose exotic is gone.
 - `docs/industries.md` - every building that takes an AI core and its Omega effect.
 
 ## Rules for the effects
@@ -72,7 +90,10 @@ after Andrzej confirmed the core picker in game). Later changes follow the relea
 - Nothing of this mod may reach a save: place changes through the `Ledger` so `suspend()` undoes
   them. The mod's own skill is never saved; the officer carries the `$oce_omegaTutelage` flag
   instead. The one exception is the Supercomputer's stretched core lifetime, kept on purpose.
-- Building needs IndEvo and VoK installed (`compileOnly` in `build.gradle`); playing does not.
+  Ship upgrades are the other: Armament Support System (Omega) and the two Omega exotics stay on
+  the ships in a save, like any other hull mod or exotic. The README says to take them off first.
+- Building needs IndEvo, VoK, Exotica Technologies and LazyLib (Kotlin runtime) installed
+  (`compileOnly` in `build.gradle`); playing does not.
 - Decompiled sources of other mods stay out of the repository.
 - No class may name a `java.lang.reflect` type (`checkNoForbiddenApis` fails the build). Reading
   the game's screens goes through `Reflect`, and every screen change must fail safe: on any error,

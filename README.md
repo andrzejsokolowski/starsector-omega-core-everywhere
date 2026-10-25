@@ -26,6 +26,38 @@ mod fixes that.
 The effects can be switched off in the LunaLib settings. They are taken off before every save and
 put back after it, so a save made with this mod still loads without it.
 
+## Omega core captains
+
+The base game already lets an Omega core captain an automated ship. Your Omega core captains also
+get Omega Timeflow: time runs 25% faster for their ship. The bonus is a LunaLib setting (0 switches
+it off). Enemy Omega ships do not get it. The skill comes off before every save and goes back on
+after it.
+
+## Turning in Omega cores
+
+Factions that buy AI cores take an Omega core for a 1,000,000 credit bounty (times the faction's
+rate) and 500 times the usual reputation, so one core maxes out your standing with any of them.
+
+## With Exotica Technologies
+
+- **Subsumed Omega Core:** an automated ship takes in an Omega core for +150 bandwidth. Does not
+  count towards the exotic limit.
+- **Omega Subcore:** +150 bandwidth, weapons cost 2/4/8 OP less by size, fighters 4 and bombers 8
+  less.
+
+Both are installed with an Omega core in Exotica's menu. Computer fleets never have them.
+
+## With Special Hullmod Upgrades
+
+**Armament Support System (Omega)** is the Omega tier of the Alpha, Beta and Gamma core upgrades.
+It uses up an Omega core when installed: autofire accuracy +100%, turret turn rate +100%, every
+weapon (missiles included) costs 3/5/8 OP less by size, deployment cost +25%. It is learned together
+with the Alpha upgrade and follows Special Hullmod Upgrades' settings for deployment cost, stacking
+core upgrades and losing the core with the ship.
+
+Take the Omega exotics and Armament Support System (Omega) off your ships before removing this mod
+from a save.
+
 ## Drops
 
 A destroyed Omega ship can drop the Omega core that commanded it. Bigger ships drop it more often,
@@ -33,7 +65,8 @@ the same way vanilla AI cores work: a destroyer counts twice, a cruiser three ti
 four times.
 
 Open LunaLib's settings (`Shift+F2` in the campaign) and pick **Omega Core Everywhere** to change the
-drop chance, or to switch drops or building effects off. Changes apply at once.
+drop chance, to switch drops or building effects off, or to change the Omega Timeflow bonus.
+Changes apply at once.
 
 ## With Astral Ascension
 
@@ -49,5 +82,5 @@ and this mod's drop settings do nothing.
 Set `starsectorPath` in `gradle.properties`, then run `gradlew releaseZip`. The build runs every
 check and writes `OmegaCoreEverywhere.zip` next to this file, ready for a mod manager.
 
-Compiling needs Industrial Evolution and AoTD Vaults of Knowledge installed in the game's `mods`
-folder, because two classes call into them. Playing does not.
+Compiling needs Industrial Evolution, AoTD Vaults of Knowledge, Exotica Technologies and LazyLib
+installed in the game's `mods` folder, because a few classes call into them. Playing does not.

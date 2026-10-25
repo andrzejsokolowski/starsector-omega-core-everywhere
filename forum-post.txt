@@ -6,6 +6,9 @@
 WHAT DOES THIS MOD DO?
 - Omega cores drop from destroyed Omega ships again. No Astral Ascension needed.
 - An Omega core in a colony building finally does something. Usually something absurd.
+- An Omega core captaining one of your automated ships makes time run faster for it.
+- Factions that buy AI cores pay 500 times the usual reputation for an Omega core.
+- With Exotica Technologies or Special Hullmod Upgrades, an Omega core can go into a ship.
 
 
 Production buildings make twice as much for half the demand, at double the upkeep.
@@ -31,6 +34,27 @@ Covers the base game, Industrial Evolution, AoTD Vaults of Knowledge and Terrafo
 [li]Buildings from other mods get the production effect if they make commodities.[/li]
 [li]Only on your own colonies, and only while the building is working.[/li]
 [/list]
+[hr][center][size=12pt][b]Omega Core Captains[/b][/size][/center][hr]
+[list]
+[li]The base game already lets an Omega core captain an automated ship. Your Omega core captains also get Omega Timeflow: time runs 25% faster for their ship.[/li]
+[li]The bonus can be changed in LunaLib's settings. Enemy Omega ships do not get it.[/li]
+[/list]
+[hr][center][size=12pt][b]Turning In Omega Cores[/b][/size][/center][hr]
+[list]
+[li]Factions that buy AI cores take an Omega core for a 1,000,000 credit bounty (times the faction's rate) and 500 times the usual reputation. One core makes any of them your best friend.[/li]
+[/list]
+[hr][center][size=12pt][b]Exotica Technologies[/b][/size][/center][hr]
+[list]
+[li][b]Subsumed Omega Core:[/b] an automated ship takes in an Omega core for +150 bandwidth. Does not count towards the exotic limit.[/li]
+[li][b]Omega Subcore:[/b] +150 bandwidth, weapons cost 2/4/8 OP less by size, fighters 4 and bombers 8 less.[/li]
+[li]Both are installed with an Omega core. Computer fleets never have them.[/li]
+[/list]
+[hr][center][size=12pt][b]Special Hullmod Upgrades[/b][/size][/center][hr]
+[list]
+[li][b]Armament Support System (Omega):[/b] the Omega tier of the Alpha, Beta and Gamma core upgrades. Uses up an Omega core when installed.[/li]
+[li]Autofire accuracy +100%, turret turn rate +100%, every weapon (missiles included) costs 3/5/8 OP less by size, deployment cost +25%.[/li]
+[li]Learned together with the Alpha upgrade. Follows Special Hullmod Upgrades' settings for deployment cost, stacking core upgrades and losing the core with the ship.[/li]
+[/list]
 [hr][center][size=12pt][b]Industrial Evolution Supercomputer Fix[/b][/size][/center][hr]
 [list]
 [li]An Omega core in IndEvo's Supercomputer used to crash the game a day later. Not any more.[/li]
@@ -38,7 +62,7 @@ Covers the base game, Industrial Evolution, AoTD Vaults of Knowledge and Terrafo
 [/list]
 [hr][center][size=12pt][b]Settings[/b][/size][/center][hr]
 [list]
-[li]In LunaLib's settings menu ([b]Shift+F2[/b] in the campaign): Omega core drops on or off, the drop chance, and building effects on or off.[/li]
+[li]In LunaLib's settings menu ([b]Shift+F2[/b] in the campaign): Omega core drops on or off, the drop chance, building effects on or off, and the Omega Timeflow bonus.[/li]
 [/list]
 [/center]
 [hr][center][size=12pt][b]Base Game Buildings[/b][/size][/center][hr]
@@ -111,12 +135,14 @@ They work together: Astral Ascension Renewed adds the Omega core administrator a
 That is right for the buildings marked "No effect" above. Anywhere else, a Starsector update has probably changed the picker; the building's tooltip then shows the effect under an "Omega core" heading.
 [b]Do I need Industrial Evolution, Vaults of Knowledge or TASC?[/b]
 No. Their buildings only get Omega effects while that mod is installed. TASC is supported in its AoTD version.
+[b]Do I need Exotica Technologies or Special Hullmod Upgrades?[/b]
+No. Their Omega upgrades only exist while that mod is installed.
 [b]Do bonuses stack?[/b]
 Yes, and they multiply. Commerce and a Resort Center on one colony give colony income x4; Ground Defenses and a Harmonic Damper give ground defenses x100.
 [b]Can I add it to an existing save?[/b]
 Yes.
 [b]Can I remove it from a save?[/b]
-Yes. The building effects come off before every save, so the save does not depend on this mod. Everything already handed out stays: delivered goods, officer levels, Hypercognition, restored ships and reputation.
+Yes, once the Omega Subcore, Subsumed Omega Core and Armament Support System (Omega) are off your ships. The building effects and Omega Timeflow come off before every save, so the save does not depend on them. Everything already handed out stays: delivered goods, officer levels, Hypercognition, restored ships and reputation.
 [b]Why can the Maglev Central Hub not take an Omega core?[/b]
 Vaults of Knowledge does not let any AI core into it, so there is nothing to put the Omega core into.
 [/spoiler]
@@ -135,6 +161,7 @@ This mod is under the CC0 (Creative Commons Zero) License, allowing you to do wh
 [/spoiler]
 
 [spoiler=Version log]
+1.1.0 - Omega core captains get Omega Timeflow: time runs 25% faster for their ship. An Omega core turned in to a faction gives 500 times the reputation. New with Exotica Technologies: Subsumed Omega Core and Omega Subcore. New with Special Hullmod Upgrades: Armament Support System (Omega).
 1.0.0 - long effects get a shorter wording in the core picker, with the full text in the building's tooltip. Production buildings no longer say the facility struggles to keep up.
 0.2.1 to 0.2.4 - the core picker and building tooltips show the Omega core's effect instead of "No effect".
 0.2.0 - first release: Omega core drops, Omega core effects in colony buildings for the base game, Industrial Evolution, Vaults of Knowledge and TASC, and the fix for the Industrial Evolution Supercomputer crash.

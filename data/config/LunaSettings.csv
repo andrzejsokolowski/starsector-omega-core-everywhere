@@ -10,3 +10,5 @@ oce_effects_text,Buildings Text,Text,"An Omega core installed in one of your col
 
 Covers the base game, Industrial Evolution, AoTD Vaults of Knowledge and Terraforming & Station Construction. Effects for a mod's buildings only exist while that mod is installed.",,,,,Buildings
 oce_effects_enabled,Omega core effects,Boolean,true,,"Omega cores give colony buildings their special effects. Switch off to go back to the plain upkeep discount. The fix for the Industrial Evolution Supercomputer crash stays on either way.",,,Buildings
+oce_header_captains,Captains Header,Header,Omega core captains,,,,,Captains
+oce_captain_timeflow,Omega Timeflow,Double,25,,"How much faster time runs, in percent, for a ship captained by one of your Omega cores. 0 switches the perk off. Enemy Omega ships never get it.",0,200,Captains

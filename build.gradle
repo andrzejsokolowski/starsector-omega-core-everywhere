@@ -26,6 +26,14 @@ dependencies {
     // Optional mods whose buildings get Omega effects. Only IndEvoEffects and VokEffects touch
     // their classes, and those two are never loaded unless the mod is enabled in the game.
     compileOnly fileTree(dir: "${starsectorPath}/mods", include: ['**/IndEvo.jar', '**/Vok.jar'])
+    // Exotica Technologies, for the two Omega exotics. Only the classes in omegacoreeverywhere.exotica
+    // touch it, and Exotica alone loads them. Newest copy only, if an older one is still lying around.
+    // It is written in Kotlin, so its runtime (shipped by LazyLib) has to be on the path to compile.
+    def exotica = fileTree(dir: "${starsectorPath}/mods", include: '**/Exotica-Technologies.jar').files
+            .sort { it.parentFile.parentFile.name }
+    if (exotica.isEmpty()) throw new GradleException('Exotica Technologies must be installed to compile')
+    compileOnly files(exotica.last())
+    compileOnly fileTree(dir: "${starsectorPath}/mods", include: '**/Kotlin-Runtime.jar')
     testImplementation files(sourceSets.main.compileClasspath)
 }
 

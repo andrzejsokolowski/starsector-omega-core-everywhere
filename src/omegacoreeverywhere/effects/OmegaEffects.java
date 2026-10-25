@@ -75,6 +75,7 @@ public final class OmegaEffects implements EveryFrameScript, EconomyTickListener
     private final Ledger ledger = new Ledger();
     /** Survives {@link #suspend()}: the Supercomputer fix, which a save is safer with than without. */
     private final Ledger lasting = new Ledger();
+    private final ShipUpgrades upgrades = new ShipUpgrades();
     private final MarketImmigrationModifier growth = new Growth();
     private final boolean indEvo = Global.getSettings().getModManager().isModEnabled(INDEVO_ID);
     private final boolean vok = Global.getSettings().getModManager().isModEnabled(VOK_ID);
@@ -172,6 +173,9 @@ public final class OmegaEffects implements EveryFrameScript, EconomyTickListener
             boolean teaching = academy;
             guarded("ACADEMY_TRAINING", () -> Training.tick(ledger, teaching));
         }
+        // Not building effects, so the buildings' off switch does not touch them.
+        guarded("OMEGA_CAPTAINS", () -> Captains.tick(ledger));
+        guarded("SHIP_UPGRADES", () -> upgrades.tick(ledger));
         ledger.sweep();
         lasting.sweep();
     }

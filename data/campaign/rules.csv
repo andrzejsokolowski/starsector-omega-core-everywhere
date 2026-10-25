@@ -1,0 +1,4 @@
+id,trigger,conditions,script,text,options,notes
+#Omega Core Everywhere: an Omega core turned in is worth 500 times its reputation. Wins over the base game rule only while the player carries an Omega core.,,,,,,
+oce_aiCores_turnInOmega,DialogOptionSelected,"$option == aiCores_selectCores
+OCE_OmegaTurnIn playerHasOmegaCores",OCE_OmegaTurnIn selectCores,,,

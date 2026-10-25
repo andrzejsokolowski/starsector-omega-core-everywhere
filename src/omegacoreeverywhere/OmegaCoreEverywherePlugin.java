@@ -5,6 +5,8 @@ import com.fs.starfarer.api.BaseModPlugin;
 import lunalib.lunaSettings.LunaSettings;
 import lunalib.lunaSettings.LunaSettingsListener;
 import omegacoreeverywhere.effects.OmegaEffects;
+import omegacoreeverywhere.ships.OmegaArmamentSupport;
+import omegacoreeverywhere.ships.OmegaCoreLoss;
 
 public class OmegaCoreEverywherePlugin extends BaseModPlugin {
 
@@ -16,12 +18,14 @@ public class OmegaCoreEverywherePlugin extends BaseModPlugin {
         if (!LunaSettings.hasSettingsListenerOfClass(SettingsListener.class)) {
             LunaSettings.addSettingsListener(new SettingsListener());
         }
+        OmegaArmamentSupport.hideWithoutSpecialHullmodUpgrades();
     }
 
     @Override
     public void onGameLoad(boolean newGame) {
         OmegaDrops.apply();
         OmegaEffects.install();
+        OmegaCoreLoss.install();
     }
 
     /** Every Omega effect comes off before a save and goes back on after, so saves stay clean. */
