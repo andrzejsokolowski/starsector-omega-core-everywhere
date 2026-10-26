@@ -10,11 +10,11 @@ import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.ui.UIComponentAPI;
+import com.fs.starfarer.api.util.Misc;
 
 import exoticatechnologies.modifications.ShipModifications;
 import exoticatechnologies.modifications.exotics.Exotic;
 import exoticatechnologies.modifications.exotics.ExoticData;
-import exoticatechnologies.util.StringUtils;
 import omegacoreeverywhere.ships.OmegaSubcoreHullmod;
 
 /**
@@ -63,8 +63,7 @@ public class OmegaSubcore extends Exotic {
 
     @Override
     public boolean removeItemsFromFleet(CampaignFleetAPI fleet, FleetMemberAPI member, MarketAPI market) {
-        OmegaExotics.takeCore(fleet, market);
-        return true;
+        return OmegaExotics.takeCore(fleet, market);
     }
 
     @Override
@@ -97,16 +96,17 @@ public class OmegaSubcore extends Exotic {
     public void modifyToolTip(TooltipMakerAPI tooltip, UIComponentAPI title, FleetMemberAPI member,
                               ShipModifications mods, ExoticData exoticData, boolean expand) {
         if (!expand) return;
-        StringUtils.getTranslation(getKey(), "longDescription")
-                .format("bandwidthIncrease", getExtraBandwidth(member, mods, exoticData))
-                .format("smallReduction", OmegaSubcoreHullmod.REDUCTION_SMALL)
-                .format("medReduction", OmegaSubcoreHullmod.REDUCTION_MEDIUM)
-                .format("largeReduction", OmegaSubcoreHullmod.REDUCTION_LARGE)
-                .format("fghtrReduction", OmegaSubcoreHullmod.REDUCTION_FIGHTER)
-                .format("bmberReduction", OmegaSubcoreHullmod.REDUCTION_BOMBER)
-                .addToTooltip(tooltip, title);
+        OmegaExotics.addPara(tooltip, title,
+                "Increases bandwidth by %s. Reduces ordnance point costs for weapons by %s/%s/%s based on weapon"
+                        + " size, and for fighters and bombers by %s/%s. Installable only on the main module.",
+                Misc.getHighlightColor(),
+                Math.round(getExtraBandwidth(member, mods, exoticData)) + " TB/s",
+                "" + OmegaSubcoreHullmod.REDUCTION_SMALL, "" + OmegaSubcoreHullmod.REDUCTION_MEDIUM,
+                "" + OmegaSubcoreHullmod.REDUCTION_LARGE, "" + OmegaSubcoreHullmod.REDUCTION_FIGHTER,
+                "" + OmegaSubcoreHullmod.REDUCTION_BOMBER);
         if (OmegaSubcoreHullmod.hasConflict(member.getVariant())) {
-            StringUtils.getTranslation(getKey(), "conflictDetected").addToTooltip(tooltip);
+            tooltip.addPara("The subcore is receiving interference from something else installed on the ship,"
+                    + " and can't reduce ordnance point costs.", Misc.getNegativeHighlightColor(), 3f);
         }
     }
 }

@@ -1,15 +1,14 @@
 {
-	# Texts of the two Omega exotics, read by Exotica Technologies. Unused without it.
+	# Texts of the two Omega exotics, read by Exotica Technologies. Unused without it. The exotics write
+	# their own expanded text; longDescription is what Exotica shows elsewhere, so it holds the numbers.
 	"SubsumedOmegaCore": {
 		"description": "Something on the ship is still thinking long after the crew has stopped. It does not answer, but the ship runs better for it.",
 		"tooltip": "Something on the ship is still thinking long after the crew has stopped. It does not answer, but the ship runs better for it.",
-		"longDescription": "Increases bandwidth by *${bandwidthIncrease} TB/s*. =Does not count towards exotic limit="
+		"longDescription": "Increases bandwidth by *150 TB/s*. =Does not count towards exotic limit="
 	},
 	"OmegaSubcore": {
 		"description": "An Omega core can be talked into running a ship's ordnance calculations. Nobody has worked out what it gets out of the arrangement.",
 		"tooltip": "Increases usable bandwidth of the ship. Greatly reduces ordnance point costs for weapons and fighters.",
-		"needItem": "You need an ${itemName} to install this.",
-		"longDescription": "Increases bandwidth by *${bandwidthIncrease} TB/s*. Reduces ordnance point costs for weapons by *${smallReduction}/${medReduction}/${largeReduction}* based on weapon size, and for fighters and bombers by *${fghtrReduction}/${bmberReduction}*. =Installable only on the main module=.",
-		"conflictDetected": "The subcore is receiving interference from something else installed on the ship, and can't reduce ordnance point costs."
+		"longDescription": "Increases bandwidth by *150 TB/s*. Reduces ordnance point costs for weapons by *2/4/8* based on weapon size, and for fighters and bombers by *4/8*. =Installable only on the main module=."
 	}
 }

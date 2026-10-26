@@ -3,7 +3,7 @@
   "name": "Omega Core Everywhere",
   "author": "Oddisz",
   "utility": "false",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Omega cores drop from destroyed Omega ships, no Astral Ascension needed, and do something in every colony building that takes an AI core: production buildings make twice as much for half the demand at double the upkeep, and the rest get effects of their own, shown in the core picker and each building's tooltip. Covers the base game, Industrial Evolution, AoTD Vaults of Knowledge and Terraforming & Station Construction; none of them is required. Omega cores captaining your automated ships make time run faster for them, factions pay 500 times the usual reputation for an Omega core, and with Exotica Technologies or Special Hullmod Upgrades installed an Omega core can go into a ship as an exotic or a hull mod. Drop chance, the timeflow bonus and an off switch for the building effects are in the LunaLib settings.",
   "modThreadId": "36168",
   "gameVersion": "0.98a-RC8",

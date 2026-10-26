@@ -161,6 +161,7 @@ This mod is under the CC0 (Creative Commons Zero) License, allowing you to do wh
 [/spoiler]
 
 [spoiler=Version log]
+1.1.1 - fixed a crash when opening Exotica Technologies' exotics list with Exotica 2.0.x.
 1.1.0 - Omega core captains get Omega Timeflow: time runs 25% faster for their ship. An Omega core turned in to a faction gives 500 times the reputation. New with Exotica Technologies: Subsumed Omega Core and Omega Subcore. New with Special Hullmod Upgrades: Armament Support System (Omega).
 1.0.0 - long effects get a shorter wording in the core picker, with the full text in the building's tooltip. Production buildings no longer say the facility struggles to keep up.
 0.2.1 to 0.2.4 - the core picker and building tooltips show the Omega core's effect instead of "No effect".

@@ -81,6 +81,10 @@ after Andrzej confirmed the core picker in game). Later changes follow the relea
   in `settings.json`). Nothing else may call into this package unless Exotica is enabled. The Omega
   Subcore's OP discounts live in the hidden hull mod `ships/OmegaSubcoreHullmod`, which the exotic
   adds and removes; `effects/ShipUpgrades` takes it off ships whose exotic is gone.
+  Players run Exotica 2.0.2 to 2.1.1 and their helpers differ (1.1.0 crashed on 2.0.x calling
+  `Utilities.hasExoticChipOrItemInCargo`). Read cargo with base game calls, keep every Exotica call
+  inside `OmegaExotics` behind a catch that logs once and fails safe, and before a release run
+  `tools/exotica_compat_check.py` against every Exotica version (instructions in the script).
 - `docs/industries.md` - every building that takes an AI core and its Omega effect.
 
 ## Rules for the effects

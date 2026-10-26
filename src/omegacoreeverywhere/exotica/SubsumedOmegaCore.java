@@ -10,11 +10,11 @@ import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.ui.UIComponentAPI;
+import com.fs.starfarer.api.util.Misc;
 
 import exoticatechnologies.modifications.ShipModifications;
 import exoticatechnologies.modifications.exotics.Exotic;
 import exoticatechnologies.modifications.exotics.ExoticData;
-import exoticatechnologies.util.StringUtils;
 
 /**
  * Exotica Technologies' Subsumed Alpha Core, with an Omega core: an automated ship takes the core in
@@ -61,8 +61,7 @@ public class SubsumedOmegaCore extends Exotic {
 
     @Override
     public boolean removeItemsFromFleet(CampaignFleetAPI fleet, FleetMemberAPI member, MarketAPI market) {
-        OmegaExotics.takeCore(fleet, market);
-        return true;
+        return OmegaExotics.takeCore(fleet, market);
     }
 
     @Override
@@ -90,8 +89,8 @@ public class SubsumedOmegaCore extends Exotic {
     public void modifyToolTip(TooltipMakerAPI tooltip, UIComponentAPI title, FleetMemberAPI member,
                               ShipModifications mods, ExoticData exoticData, boolean expand) {
         if (!expand) return;
-        StringUtils.getTranslation(getKey(), "longDescription")
-                .format("bandwidthIncrease", getExtraBandwidth(member, mods, exoticData))
-                .addToTooltip(tooltip, title);
+        OmegaExotics.addPara(tooltip, title, "Increases bandwidth by %s. %s.", Misc.getHighlightColor(),
+                Math.round(getExtraBandwidth(member, mods, exoticData)) + " TB/s",
+                "Does not count towards exotic limit");
     }
 }
