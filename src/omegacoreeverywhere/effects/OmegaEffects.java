@@ -107,7 +107,7 @@ public final class OmegaEffects implements EveryFrameScript, EconomyTickListener
     public static void suspend() {
         if (current == null) return;
         current.suspended = true;
-        current.ledger.releaseAll();
+        current.ledger.releaseForSave();
     }
 
     public static void resume() {

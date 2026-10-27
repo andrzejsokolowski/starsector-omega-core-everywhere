@@ -92,8 +92,10 @@ after Andrzej confirmed the core picker in game). Later changes follow the relea
 - No building class is replaced. Effects are stat modifiers under `oce_` ids, or calls into a
   building's public methods.
 - Nothing of this mod may reach a save: place changes through the `Ledger` so `suspend()` undoes
-  them. The mod's own skill is never saved; the officer carries the `$oce_omegaTutelage` flag
-  instead. The one exception is the Supercomputer's stretched core lifetime, kept on purpose.
+  them. `suspend()` runs after the game's own save step has emptied every building's income, supply
+  and demand, so it must never reapply a colony (up to 1.1.1 every save with a colony-wide effect
+  crashed). The game reapplies every colony itself after the save. The mod's own skill is never
+  saved; the officer carries the `$oce_omegaTutelage` flag instead. The one exception is the Supercomputer's stretched core lifetime, kept on purpose.
   Ship upgrades are the other: Armament Support System (Omega) and the two Omega exotics stay on
   the ships in a save, like any other hull mod or exotic. The README says to take them off first.
 - Building needs IndEvo, VoK, Exotica Technologies and LazyLib (Kotlin runtime) installed
