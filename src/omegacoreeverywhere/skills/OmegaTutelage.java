@@ -4,6 +4,8 @@ import com.fs.starfarer.api.characters.ShipSkillEffect;
 import com.fs.starfarer.api.combat.MutableShipStatsAPI;
 import com.fs.starfarer.api.combat.ShipAPI.HullSize;
 
+import omegacoreeverywhere.Safe;
+
 /** The skill an officer picks up from an Academy run by an Omega core. */
 public class OmegaTutelage {
 
@@ -13,12 +15,13 @@ public class OmegaTutelage {
 
         @Override
         public void apply(MutableShipStatsAPI stats, HullSize hullSize, String id, float level) {
-            stats.getTimeMult().modifyMult(id, 1f + TIMEFLOW_BONUS / 100f);
+            Safe.run("the Omega Tutelage skill",
+                    () -> stats.getTimeMult().modifyMult(id, 1f + TIMEFLOW_BONUS / 100f));
         }
 
         @Override
         public void unapply(MutableShipStatsAPI stats, HullSize hullSize, String id) {
-            stats.getTimeMult().unmodify(id);
+            Safe.run("the Omega Tutelage skill", () -> stats.getTimeMult().unmodify(id));
         }
 
         @Override

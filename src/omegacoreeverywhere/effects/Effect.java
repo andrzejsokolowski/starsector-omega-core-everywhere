@@ -127,6 +127,13 @@ enum Effect {
         put(EXOMATTER, "aotd_exomatter_processing");
         put(NONE, "aotd_daedalus_array", "aotd_coronal_control", "aotd_persean_university");
 
+        // AoTD Seats of Power: Hexagon is a military base, Capital Complex the capital's
+        // Population & Infrastructure. Both make commodities, so without these lines they would
+        // get the production effect.
+        put(FLEET_SIZE, "aotd_hexagon");
+        put(GROWTH, "aotd_capital_complex");
+        put(NONE, "aotd_nova_exploraria");
+
         // Terraforming & Station Construction
         put(PARK, "BOGGLED_MESOZOIC_PARK");
         put(GENELAB, "BOGGLED_GENELAB");

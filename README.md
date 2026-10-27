@@ -16,8 +16,8 @@ Install an Omega core the same way as any other AI core. On your own colonies:
   "No effect". An effect too long for that line gets a short version there, and the tooltip shows it
   in full under an "Omega core" heading.
 
-Buildings from Industrial Evolution, AoTD Vaults of Knowledge and Terraforming & Station
-Construction are covered too. None of those mods is required, and their effects only exist while
+Buildings from Industrial Evolution, AoTD Vaults of Knowledge, AoTD Seats of Power and
+Terraforming & Station Construction are covered too. None of those mods is required, and their effects only exist while
 the mod is installed. [docs/industries.md](docs/industries.md) lists every building and its effect.
 
 An Omega core in Industrial Evolution's Supercomputer normally crashes the game a day later. This

@@ -8,6 +8,8 @@ import com.fs.starfarer.api.combat.ShipAPI.HullSize;
 import com.fs.starfarer.api.combat.ShipVariantAPI;
 import com.fs.starfarer.api.impl.campaign.ids.Stats;
 
+import omegacoreeverywhere.Safe;
+
 /**
  * What Exotica Technologies' Omega Subcore exotic does to a ship: cheaper weapons and fighters.
  *
@@ -41,6 +43,10 @@ public class OmegaSubcoreHullmod extends BaseHullMod {
 
     @Override
     public void applyEffectsBeforeShipCreation(HullSize hullSize, MutableShipStatsAPI stats, String id) {
+        Safe.run("the Omega Subcore", () -> applyStats(stats, id));
+    }
+
+    private static void applyStats(MutableShipStatsAPI stats, String id) {
         if (hasConflict(stats.getVariant())) return;
         reduce(stats, id, REDUCTION_SMALL, Stats.SMALL_BALLISTIC_MOD, Stats.SMALL_ENERGY_MOD, Stats.SMALL_MISSILE_MOD);
         reduce(stats, id, REDUCTION_MEDIUM, Stats.MEDIUM_BALLISTIC_MOD, Stats.MEDIUM_ENERGY_MOD, Stats.MEDIUM_MISSILE_MOD);

@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-
 import com.fs.starfarer.api.EveryFrameScript;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
@@ -37,6 +35,7 @@ import com.fs.starfarer.api.impl.campaign.intel.MessageIntel;
 import com.fs.starfarer.api.impl.campaign.population.PopulationComposition;
 import com.fs.starfarer.api.util.Misc;
 
+import omegacoreeverywhere.Safe;
 import omegacoreeverywhere.Settings;
 
 /**
@@ -68,8 +67,6 @@ public final class OmegaEffects implements EveryFrameScript, EconomyTickListener
     private static final String TENEBRIUM = "aotd_tenebrium";
     private static final String DATABANK = "research_databank";
 
-    private static final Logger log = Global.getLogger(OmegaEffects.class);
-
     private static OmegaEffects current;
 
     private final Ledger ledger = new Ledger();
@@ -85,6 +82,8 @@ public final class OmegaEffects implements EveryFrameScript, EconomyTickListener
     private Map<Industry, Integer> disrupted = new IdentityHashMap<>();
     private final Map<Industry, Float> exomatterDays = new IdentityHashMap<>();
     private boolean suspended;
+    /** Something outside a single effect failed: every effect stays off until the game is loaded again. */
+    private boolean failed;
 
     private OmegaEffects() {}
 
@@ -129,10 +128,28 @@ public final class OmegaEffects implements EveryFrameScript, EconomyTickListener
         return true;
     }
 
+    /**
+     * Any error is caught here, so it never reaches the game. One effect failing switches off that
+     * effect ({@link #guarded}); anything else failing switches off all of them. Nothing is asserted
+     * after that, so the next sweep takes every effect off again. The Supercomputer fix ({@code lasting})
+     * is kept: without it the Supercomputer would crash the game.
+     */
     @Override
     public void advance(float amount) {
         if (suspended || current != this) return;
+        if (failed) {
+            Safe.run("taking the Omega effects off", ledger::sweep);
+            return;
+        }
+        try {
+            tick(amount);
+        } catch (Throwable t) {
+            failed = true;
+            Safe.failed("the Omega effects (all switched off until the game is loaded again)", t);
+        }
+    }
 
+    private void tick(float amount) {
         SectorAPI sector = Global.getSector();
         boolean paused = sector.isPaused();
         float days = paused ? 0f : sector.getClock().convertToDays(amount);
@@ -400,7 +417,11 @@ public final class OmegaEffects implements EveryFrameScript, EconomyTickListener
 
     @Override
     public void reportEconomyTick(int iterIndex) {
-        if (suspended || current != this || !indEvo || !Settings.effectsEnabled()) return;
+        Safe.run("the Omega effects' economy tick", () -> economyTick());
+    }
+
+    private void economyTick() {
+        if (suspended || failed || current != this || !indEvo || !Settings.effectsEnabled()) return;
         // IndEvo's forges pay out from their own listener, registered after this one, and lose
         // the doubling whenever the colony is reapplied. Set it again right before they read it.
         guarded(Effect.FORGE.name(), () -> {
@@ -419,10 +440,12 @@ public final class OmegaEffects implements EveryFrameScript, EconomyTickListener
 
     @Override
     public void reportEconomyMonthEnd() {
-        if (suspended || current != this) return;
-        reportEconomyTick(-1);
-        if (!Settings.effectsEnabled()) return;
-        guarded("DELIVERIES", this::deliver);
+        Safe.run("the Omega effects' monthly deliveries", () -> {
+            if (suspended || failed || current != this) return;
+            economyTick();
+            if (!Settings.effectsEnabled()) return;
+            guarded("DELIVERIES", this::deliver);
+        });
     }
 
     private void deliver() {
@@ -488,12 +511,12 @@ public final class OmegaEffects implements EveryFrameScript, EconomyTickListener
         if (broken.contains(effect)) return;
         try {
             body.run();
-        } catch (RuntimeException | LinkageError e) {
+        } catch (Throwable t) {
             broken.add(effect);
-            log.error("Omega effect " + effect + " failed and is switched off until the game is loaded again", e);
-            Global.getSector().getCampaignUI().addMessage(
-                    "Omega Core Everywhere: one Omega core effect hit an error and was switched off. "
-                            + "See starsector.log.", Misc.getNegativeHighlightColor());
+            Safe.failed("the Omega effect " + effect + " (switched off until the game is loaded again)", t);
+            Safe.run("telling the player an effect was switched off", () -> Global.getSector().getCampaignUI()
+                    .addMessage("Omega Core Everywhere: one Omega core effect hit an error and was switched off. "
+                            + "See starsector.log.", Misc.getNegativeHighlightColor()));
         }
     }
 
@@ -501,8 +524,12 @@ public final class OmegaEffects implements EveryFrameScript, EconomyTickListener
     private static final class Growth implements MarketImmigrationModifier {
         @Override
         public void modifyIncoming(MarketAPI market, PopulationComposition incoming) {
+            Safe.run("the Omega growth effect", () -> doubleGrowth(incoming));
+        }
+
+        private static void doubleGrowth(PopulationComposition incoming) {
             if (incoming.getWeight().getModifiedValue() > 0f) {
-                incoming.getWeight().modifyMult("oce_growth", 2f, CORE + " (Population & Infrastructure)");
+                incoming.getWeight().modifyMult("oce_growth", 2f, CORE);
             }
         }
     }

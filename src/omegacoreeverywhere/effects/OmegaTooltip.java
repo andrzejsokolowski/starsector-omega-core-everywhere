@@ -7,6 +7,7 @@ import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 
+import omegacoreeverywhere.Safe;
 import omegacoreeverywhere.Settings;
 
 /**
@@ -21,6 +22,10 @@ final class OmegaTooltip extends BaseIndustryOptionProvider {
     @Override
     public void addToIndustryTooltip(Industry ind, IndustryTooltipMode mode, TooltipMakerAPI tooltip,
                                      float width, boolean expanded) {
+        Safe.run("the Omega core line in a building's tooltip", () -> describe(ind, mode, tooltip));
+    }
+
+    private static void describe(Industry ind, IndustryTooltipMode mode, TooltipMakerAPI tooltip) {
         if (mode != IndustryTooltipMode.NORMAL || ind.getMarket() == null) return;
         if (!ind.getMarket().isPlayerOwned() || !OmegaEffects.hasOmega(ind) || !Settings.effectsEnabled()) return;
         Effect effect = Effect.of(ind);

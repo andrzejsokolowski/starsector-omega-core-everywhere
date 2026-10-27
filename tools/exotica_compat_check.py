@@ -19,7 +19,8 @@ def jp(cp, *args):
     return subprocess.run([javap, '-cp', cp] + list(args), capture_output=True, text=True).stdout
 
 def parse(out, cls):
-    """{(name, descriptor): abstract?} and superclass, from javap -s -p output."""
+    """{(name, descriptor): abstract?} and superclass, from javap -s -p output. Private methods go
+    into PRIVATE as well: they are helpers, never overrides."""
     simple = cls.split('.')[-1]
     res = {}; parent = None; cur = None; curabs = False
     hm = re.search(r'(?:class|interface) \S+ extends (\S+?)(?: implements|\s*\{)', out)
@@ -32,6 +33,7 @@ def parse(out, cls):
         mm = re.match(r'\s+[^(]*?([\w$]+)\((.*)\)( throws .*)?;$', line)
         if mm:
             cur = mm.group(1)
+            if line.strip().startswith('private '): PRIVATE.add((cls, cur))
             if cur == simple: cur = '<init>'
             curabs = ' abstract ' in ' ' + line + ' '
             continue
@@ -39,6 +41,7 @@ def parse(out, cls):
         if fm: cur = fm.group(1); curabs = False
     return res, parent
 
+PRIVATE = set()
 mine = []
 for root, _, files in os.walk(classes):
     for f in files:
@@ -99,6 +102,7 @@ for jar in jars:
         if res is None: problems.append(f'missing superclass {base}'); continue
         for (name, desc) in sorted(own[c]):
             if name.startswith('lambda$') or name == '<clinit>' or not desc.startswith('('): continue
+            if (c, name) in PRIVATE: continue
             checked += 1
             if (name, desc) not in res and name != '<init>':
                 problems.append(f'{c}.{name}{desc} overrides nothing in {base}')

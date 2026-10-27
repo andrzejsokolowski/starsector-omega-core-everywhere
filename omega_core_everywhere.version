@@ -4,8 +4,8 @@
 	"modThreadId":36168,
 	"modVersion": {
 		"major":1,
-		"minor":1,
-		"patch":2
+		"minor":2,
+		"patch":0
 	},
 	"starsectorVersion":"0.98a-RC8",
 	"directDownloadURL":"https://github.com/andrzejsokolowski/starsector-omega-core-everywhere/releases/latest/download/OmegaCoreEverywhere.zip"

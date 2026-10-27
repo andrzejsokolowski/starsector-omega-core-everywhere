@@ -7,6 +7,8 @@ import com.fs.starfarer.api.combat.EngagementResultAPI;
 import com.fs.starfarer.api.combat.ShipVariantAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 
+import omegacoreeverywhere.Safe;
+
 /**
  * A ship disabled or destroyed with Armament Support System (Omega) loses the Omega core in it, as
  * Special Hullmod Upgrades does with its own cores, unless that mod's "keep the items" setting is on.
@@ -24,6 +26,10 @@ public final class OmegaCoreLoss extends BaseCampaignEventListener {
 
     @Override
     public void reportPlayerEngagement(EngagementResultAPI result) {
+        Safe.run("Armament Support System (Omega) after a battle", () -> loseCores(result));
+    }
+
+    private static void loseCores(EngagementResultAPI result) {
         if (OmegaArmamentSupport.coreSurvivesLoss()) return;
         EngagementResultForFleetAPI player = result.didPlayerWin() ? result.getWinnerResult() : result.getLoserResult();
         if (player == null) return;

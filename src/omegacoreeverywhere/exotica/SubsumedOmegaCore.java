@@ -15,6 +15,7 @@ import com.fs.starfarer.api.util.Misc;
 import exoticatechnologies.modifications.ShipModifications;
 import exoticatechnologies.modifications.exotics.Exotic;
 import exoticatechnologies.modifications.exotics.ExoticData;
+import omegacoreeverywhere.Safe;
 
 /**
  * Exotica Technologies' Subsumed Alpha Core, with an Omega core: an automated ship takes the core in
@@ -22,6 +23,8 @@ import exoticatechnologies.modifications.exotics.ExoticData;
  * Computer fleets never get it, and it never drops.
  */
 public class SubsumedOmegaCore extends Exotic {
+
+    private static final String WHERE = "the Subsumed Omega Core";
 
     public static final float BANDWIDTH = 150f;
 
@@ -56,12 +59,12 @@ public class SubsumedOmegaCore extends Exotic {
 
     @Override
     public boolean canAfford(CampaignFleetAPI fleet, MarketAPI market) {
-        return OmegaExotics.canAfford(fleet, market);
+        return Safe.get(WHERE, () -> OmegaExotics.canAfford(fleet, market), false);
     }
 
     @Override
     public boolean removeItemsFromFleet(CampaignFleetAPI fleet, FleetMemberAPI member, MarketAPI market) {
-        return OmegaExotics.takeCore(fleet, market);
+        return Safe.get(WHERE, () -> OmegaExotics.takeCore(fleet, market), false);
     }
 
     @Override
@@ -71,8 +74,10 @@ public class SubsumedOmegaCore extends Exotic {
 
     @Override
     public boolean canApply(FleetMemberAPI member, ShipModifications mods) {
-        if (member.getFleetData() == null || member.getFleetData().getFleet() == null) return false;
-        return member.getOwner() == 0 && super.canApply(member, mods);
+        return Safe.get(WHERE, () -> {
+            if (member.getFleetData() == null || member.getFleetData().getFleet() == null) return false;
+            return member.getOwner() == 0 && super.canApply(member, mods);
+        }, false);
     }
 
     @Override
@@ -82,12 +87,17 @@ public class SubsumedOmegaCore extends Exotic {
 
     @Override
     public float getExtraBandwidth(FleetMemberAPI member, ShipModifications mods, ExoticData exoticData) {
-        return BANDWIDTH * getPositiveMult(member, mods, exoticData);
+        return Safe.get(WHERE, () -> BANDWIDTH * getPositiveMult(member, mods, exoticData), 0f);
     }
 
     @Override
     public void modifyToolTip(TooltipMakerAPI tooltip, UIComponentAPI title, FleetMemberAPI member,
                               ShipModifications mods, ExoticData exoticData, boolean expand) {
+        Safe.run(WHERE, () -> describe(tooltip, title, member, mods, exoticData, expand));
+    }
+
+    private void describe(TooltipMakerAPI tooltip, UIComponentAPI title, FleetMemberAPI member,
+                          ShipModifications mods, ExoticData exoticData, boolean expand) {
         if (!expand) return;
         OmegaExotics.addPara(tooltip, title, "Increases bandwidth by %s. %s.", Misc.getHighlightColor(),
                 Math.round(getExtraBandwidth(member, mods, exoticData)) + " TB/s",

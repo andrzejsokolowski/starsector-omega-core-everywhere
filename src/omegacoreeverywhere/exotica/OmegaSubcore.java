@@ -15,6 +15,7 @@ import com.fs.starfarer.api.util.Misc;
 import exoticatechnologies.modifications.ShipModifications;
 import exoticatechnologies.modifications.exotics.Exotic;
 import exoticatechnologies.modifications.exotics.ExoticData;
+import omegacoreeverywhere.Safe;
 import omegacoreeverywhere.ships.OmegaSubcoreHullmod;
 
 /**
@@ -24,6 +25,8 @@ import omegacoreeverywhere.ships.OmegaSubcoreHullmod;
  * Computer fleets never get it, and it never drops.
  */
 public class OmegaSubcore extends Exotic {
+
+    private static final String WHERE = "the Omega Subcore";
 
     public static final float BANDWIDTH = 150f;
 
@@ -58,12 +61,12 @@ public class OmegaSubcore extends Exotic {
 
     @Override
     public boolean canAfford(CampaignFleetAPI fleet, MarketAPI market) {
-        return OmegaExotics.canAfford(fleet, market);
+        return Safe.get(WHERE, () -> OmegaExotics.canAfford(fleet, market), false);
     }
 
     @Override
     public boolean removeItemsFromFleet(CampaignFleetAPI fleet, FleetMemberAPI member, MarketAPI market) {
-        return OmegaExotics.takeCore(fleet, market);
+        return Safe.get(WHERE, () -> OmegaExotics.takeCore(fleet, market), false);
     }
 
     @Override
@@ -73,28 +76,35 @@ public class OmegaSubcore extends Exotic {
 
     @Override
     public void onInstall(FleetMemberAPI member) {
-        OmegaExotics.addCarrier(member);
+        Safe.run(WHERE, () -> OmegaExotics.addCarrier(member));
     }
 
     @Override
     public void onDestroy(FleetMemberAPI member) {
-        OmegaExotics.removeCarrier(member);
+        Safe.run(WHERE, () -> OmegaExotics.removeCarrier(member));
     }
 
     /** Puts the carrier back if anything took it off while the exotic is still installed. */
     @Override
     public void advanceInCampaign(FleetMemberAPI member, ShipModifications mods, float amount, ExoticData exoticData) {
-        if (!member.getVariant().hasHullMod(OmegaSubcoreHullmod.ID)) OmegaExotics.addCarrier(member);
+        Safe.run(WHERE, () -> {
+            if (!member.getVariant().hasHullMod(OmegaSubcoreHullmod.ID)) OmegaExotics.addCarrier(member);
+        });
     }
 
     @Override
     public float getExtraBandwidth(FleetMemberAPI member, ShipModifications mods, ExoticData exoticData) {
-        return BANDWIDTH * getPositiveMult(member, mods, exoticData);
+        return Safe.get(WHERE, () -> BANDWIDTH * getPositiveMult(member, mods, exoticData), 0f);
     }
 
     @Override
     public void modifyToolTip(TooltipMakerAPI tooltip, UIComponentAPI title, FleetMemberAPI member,
                               ShipModifications mods, ExoticData exoticData, boolean expand) {
+        Safe.run(WHERE, () -> describe(tooltip, title, member, mods, exoticData, expand));
+    }
+
+    private void describe(TooltipMakerAPI tooltip, UIComponentAPI title, FleetMemberAPI member,
+                          ShipModifications mods, ExoticData exoticData, boolean expand) {
         if (!expand) return;
         OmegaExotics.addPara(tooltip, title,
                 "Increases bandwidth by %s. Reduces ordnance point costs for weapons by %s/%s/%s based on weapon"

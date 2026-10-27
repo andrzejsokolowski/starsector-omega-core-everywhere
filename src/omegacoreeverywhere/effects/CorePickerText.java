@@ -19,6 +19,7 @@ import com.fs.starfarer.api.ui.UIPanelAPI;
 import com.fs.starfarer.campaign.CampaignState;
 import com.fs.state.AppDriver;
 
+import omegacoreeverywhere.Safe;
 import omegacoreeverywhere.Settings;
 
 /**
@@ -55,10 +56,9 @@ final class CorePickerText implements CampaignUIRenderingListener {
         if (failed) return;
         try {
             run();
-        } catch (RuntimeException | LinkageError e) {
+        } catch (Throwable t) {
             failed = true;
-            log.error("Omega Core Everywhere could not read the core picker; it keeps the game's own text "
-                    + "until the game is loaded again", e);
+            Safe.failed("reading the core picker (it keeps the game's own text until the game is loaded again)", t);
         }
     }
 

@@ -95,12 +95,19 @@ after Andrzej confirmed the core picker in game). Later changes follow the relea
   them. `suspend()` runs after the game's own save step has emptied every building's income, supply
   and demand, so it must never reapply a colony (up to 1.1.1 every save with a colony-wide effect
   crashed). The game reapplies every colony itself after the save. The mod's own skill is never
-  saved; the officer carries the `$oce_omegaTutelage` flag instead. The one exception is the Supercomputer's stretched core lifetime, kept on purpose.
+  saved; the officer carries the `$oce_omegaTutelage` flag instead. The one exception is the
+  Supercomputer's stretched core lifetime, kept on purpose.
   Ship upgrades are the other: Armament Support System (Omega) and the two Omega exotics stay on
   the ships in a save, like any other hull mod or exotic. The README says to take them off first.
 - Building needs IndEvo, VoK, Exotica Technologies and LazyLib (Kotlin runtime) installed
   (`compileOnly` in `build.gradle`); playing does not.
 - Decompiled sources of other mods stay out of the repository.
+- The mod never crashes the game (Andrzej: rather no effect than a crash). Every place the game
+  calls into the mod goes through `Safe` (`Safe.run`, `Safe.get` with a harmless fallback, or a
+  catch that hands the error to `Safe.failed`): the error goes to starsector.log once and that call
+  does nothing. A new hook, listener, hull mod, skill or exotic method starts the same way.
+  Before a release run `tools/CrashStress.java` (no game, a blank game, a game where every call
+  throws; nothing may escape), without Exotica and with every Exotica version.
 - No class may name a `java.lang.reflect` type (`checkNoForbiddenApis` fails the build). Reading
   the game's screens goes through `Reflect`, and every screen change must fail safe: on any error,
   log once, stop, and leave the game's own text.

@@ -317,6 +317,25 @@ placeholder. It cannot be built and does nothing, so there is nothing to improve
 
 ---
 
+## AoTD Seats of Power (optional)
+
+### Unique effects
+
+**Hexagon** (`aotd_hexagon`)
+A unique command building that coordinates fleets, built on Seats of Power's military base.
+Omega: fleet size ×2, applied after every other modifier, as with Patrol HQ, Military Base and
+High Command.
+
+**Capital Complex** (`aotd_capital_complex`)
+The faction capital's Population & Infrastructure.
+Omega: population growth ×2, as with Population & Infrastructure.
+
+### No effect
+
+Nova Exploraria (`aotd_nova_exploraria`).
+
+---
+
 ## Terraforming & Station Construction (optional)
 
 Built against the version of TASC that runs with AoTD.
@@ -406,5 +425,6 @@ This mod leaves both alone, so they do not also get the production effect.
   Tree of Life, Cloud Painter), Old Industrial Ruins, Ruined Infrastructure.
 - VoK: Maglev Central Hub, Bifrost Control Center, Nidavelir Complex, Pluto Mining Station,
   Coronal Wormhole, Coronal Collector.
+- Seats of Power: Shrine of Gilead. Theory of Toolbox: Grand Wonder build site.
 - TASC: Stellar Reflector Array, Ismara's Sling, Galatian Particle Accelerator, Perihelion Project,
   Expand Station, Planetary Agrav Field, Atmosphere Processor, Planet Cracker, Ouyang Optimizer.

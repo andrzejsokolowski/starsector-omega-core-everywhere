@@ -13,7 +13,7 @@ WHAT DOES THIS MOD DO?
 
 Production buildings make twice as much for half the demand, at double the upkeep.
 Every other building gets an Omega effect of its own, from doubled patrol fleets to stations that shrug off disruption.
-Covers the base game, Industrial Evolution, AoTD Vaults of Knowledge and Terraforming & Station Construction. None of them is required.
+Covers the base game, Industrial Evolution, AoTD Vaults of Knowledge, AoTD Seats of Power and Terraforming & Station Construction. None of them is required.
 
 
 [color=red]Requires [b]LunaLib[/b].[/color]
@@ -109,6 +109,14 @@ Covers the base game, Industrial Evolution, AoTD Vaults of Knowledge and Terrafo
 [tr][td]Daedalus Array, Hypershunt Control, Persean Technology Institute[/td][td]No effect[/td][td]Only the usual -25% upkeep[/td][/tr]
 [/table]
 [/spoiler]
+[spoiler=AoTD Seats of Power buildings]
+[table]
+[tr][td][b]Building[/b][/td][td][b]Omega core[/b][/td][td][b]Effect[/b][/td][/tr]
+[tr][td]Hexagon[/td][td]Unique[/td][td]Fleet size x2[/td][/tr]
+[tr][td]Capital Complex[/td][td]Unique[/td][td]Population growth x2, after every other modifier[/td][/tr]
+[tr][td]Nova Exploraria[/td][td]No effect[/td][td]Only the usual -25% upkeep[/td][/tr]
+[/table]
+[/spoiler]
 [spoiler=Terraforming & Station Construction buildings]
 [table]
 [tr][td][b]Building[/b][/td][td][b]Omega core[/b][/td][td][b]Effect[/b][/td][/tr]
@@ -161,6 +169,7 @@ This mod is under the CC0 (Creative Commons Zero) License, allowing you to do wh
 [/spoiler]
 
 [spoiler=Version log]
+1.2.0 - AoTD Seats of Power: an Omega core in the Hexagon doubles fleet size, in the Capital Complex it doubles population growth. Every part of the mod now switches itself off instead of crashing the game if something goes wrong.
 1.1.2 - fixed a crash when saving with an Omega core in Commerce, a Trade Outpost or Underworld, a Resort Center, a Terminus or Domed Cities.
 1.1.1 - fixed a crash when opening Exotica Technologies' exotics list with Exotica 2.0.x.
 1.1.0 - Omega core captains get Omega Timeflow: time runs 25% faster for their ship. An Omega core turned in to a faction gives 500 times the reputation. New with Exotica Technologies: Subsumed Omega Core and Omega Subcore. New with Special Hullmod Upgrades: Armament Support System (Omega).

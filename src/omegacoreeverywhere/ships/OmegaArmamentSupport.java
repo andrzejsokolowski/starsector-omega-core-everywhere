@@ -19,6 +19,7 @@ import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 
 import lunalib.lunaSettings.LunaSettings;
+import omegacoreeverywhere.Safe;
 
 /**
  * Armament Support System (Omega): the Omega tier of Special Hullmod Upgrades' Alpha, Beta and Gamma
@@ -28,6 +29,9 @@ import lunalib.lunaSettings.LunaSettings;
  *
  * It follows the same three Special Hullmod Upgrades settings as the Alpha upgrade: the deployment
  * cost increase, the incompatibility between core upgrades, and the core being lost with the ship.
+ *
+ * Every method the game calls goes through {@link Safe}: on an error the hull mod does nothing, and
+ * cannot be installed, instead of crashing the refit screen or a battle.
  */
 public class OmegaArmamentSupport extends BaseHullMod {
 
@@ -87,13 +91,20 @@ public class OmegaArmamentSupport extends BaseHullMod {
         return false;
     }
 
+    private static final String WHERE = "Armament Support System (Omega)";
+
     @Override
     public CargoStackAPI getRequiredItem() {
-        return Global.getSettings().createCargoStack(CargoItemType.RESOURCES, Commodities.OMEGA_CORE, null);
+        return Safe.get(WHERE, () -> Global.getSettings().createCargoStack(CargoItemType.RESOURCES,
+                Commodities.OMEGA_CORE, null), null);
     }
 
     @Override
     public void applyEffectsBeforeShipCreation(HullSize hullSize, MutableShipStatsAPI stats, String id) {
+        Safe.run(WHERE, () -> applyStats(stats, id));
+    }
+
+    private static void applyStats(MutableShipStatsAPI stats, String id) {
         stats.getAutofireAimAccuracy().modifyFlat(id, AUTOFIRE_BONUS / 100f);
         stats.getWeaponTurnRateBonus().modifyPercent(id, TURRET_TURN_BONUS);
         stats.getBeamWeaponTurnRateBonus().modifyPercent(id, TURRET_TURN_BONUS);
@@ -112,37 +123,48 @@ public class OmegaArmamentSupport extends BaseHullMod {
     /** One core runs the fire control: a Special Hullmod Upgrades core added later is taken off again. */
     @Override
     public void applyEffectsAfterShipCreation(ShipAPI ship, String id) {
-        if (coresStack()) return;
-        for (String core : SHU_CORES) {
-            if (ship.getVariant().hasHullMod(core)) ship.getVariant().removeMod(core);
-        }
+        Safe.run(WHERE, () -> {
+            if (coresStack()) return;
+            for (String core : SHU_CORES) {
+                if (ship.getVariant().hasHullMod(core)) ship.getVariant().removeMod(core);
+            }
+        });
     }
 
+    /** Without its Omega core requirement the hull mod would be free, so then it is not offered at all. */
     @Override
     public boolean isApplicableToShip(ShipAPI ship) {
-        if (ship == null || ship.getVariant() == null) return false;
-        if (hasAny(ship.getVariant(), SUBCORES)) return false;
-        return coresStack() || !hasAny(ship.getVariant(), SHU_CORES);
+        return Safe.get(WHERE, () -> {
+            if (ship == null || ship.getVariant() == null || getRequiredItem() == null) return false;
+            if (hasAny(ship.getVariant(), SUBCORES)) return false;
+            return coresStack() || !hasAny(ship.getVariant(), SHU_CORES);
+        }, false);
     }
 
     @Override
     public String getUnapplicableReason(ShipAPI ship) {
-        if (ship != null && ship.getVariant() != null && !isApplicableToShip(ship)) {
-            return "Incompatible with installed AI core";
-        }
-        return super.getUnapplicableReason(ship);
+        return Safe.get(WHERE, () -> {
+            if (ship != null && ship.getVariant() != null && !isApplicableToShip(ship)) {
+                return "Incompatible with installed AI core";
+            }
+            return super.getUnapplicableReason(ship);
+        }, null);
     }
 
     @Override
     public boolean canBeAddedOrRemovedNow(ShipAPI ship, MarketAPI marketOrNull, CoreUITradeMode mode) {
-        if (ship != null && ship.isStationModule()) return false;
-        return super.canBeAddedOrRemovedNow(ship, marketOrNull, mode);
+        return Safe.get(WHERE, () -> {
+            if (ship != null && ship.isStationModule()) return false;
+            return super.canBeAddedOrRemovedNow(ship, marketOrNull, mode);
+        }, false);
     }
 
     @Override
     public String getCanNotBeInstalledNowReason(ShipAPI ship, MarketAPI marketOrNull, CoreUITradeMode mode) {
-        if (ship != null && ship.isStationModule()) return "Can only be installed on the main module";
-        return super.getCanNotBeInstalledNowReason(ship, marketOrNull, mode);
+        return Safe.get(WHERE, () -> {
+            if (ship != null && ship.isStationModule()) return "Can only be installed on the main module";
+            return super.getCanNotBeInstalledNowReason(ship, marketOrNull, mode);
+        }, null);
     }
 
     @Override
@@ -157,7 +179,12 @@ public class OmegaArmamentSupport extends BaseHullMod {
     }
 
     @Override
-    public void addPostDescriptionSection(TooltipMakerAPI tooltip, HullSize hullSize, ShipAPI ship, float width, boolean isForModSpec) {
+    public void addPostDescriptionSection(TooltipMakerAPI tooltip, HullSize hullSize, ShipAPI ship, float width,
+                                          boolean isForModSpec) {
+        Safe.run(WHERE, () -> describe(tooltip));
+    }
+
+    private static void describe(TooltipMakerAPI tooltip) {
         float pad = 3f;
         float opad = 10f;
         Color good = Misc.getPositiveHighlightColor();

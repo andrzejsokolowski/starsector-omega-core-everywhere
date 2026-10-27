@@ -23,6 +23,7 @@ import exoticatechnologies.modifications.ShipModLoader;
 import exoticatechnologies.modifications.ShipModifications;
 import exoticatechnologies.refit.RefitButtonAdderKt;
 import exoticatechnologies.util.Utilities;
+import omegacoreeverywhere.Safe;
 import omegacoreeverywhere.ships.OmegaArmamentSupport;
 import omegacoreeverywhere.ships.OmegaSubcoreHullmod;
 
@@ -82,15 +83,12 @@ public final class OmegaExotics {
 
     /** The exotic shows in Exotica's list once an Omega core or its chip is in the fleet or the colony's storage. */
     static boolean hasCoreOrChip(String exoticKey, MarketAPI market) {
-        try {
+        return Safe.get("the Omega exotics' list check", () -> {
             CampaignFleetAPI fleet = Global.getSector().getPlayerFleet();
             CargoAPI own = fleet == null ? null : fleet.getCargo();
             CargoAPI stored = storage(market);
             return hasCore(own) || hasCore(stored) || hasChip(own, exoticKey) || hasChip(stored, exoticKey);
-        } catch (RuntimeException e) {
-            report(e);
-            return false;
-        }
+        }, false);
     }
 
     static boolean canAfford(CampaignFleetAPI fleet, MarketAPI market) {

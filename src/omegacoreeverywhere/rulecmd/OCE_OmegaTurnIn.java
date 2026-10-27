@@ -14,12 +14,17 @@ import com.fs.starfarer.api.impl.campaign.ids.Commodities;
 import com.fs.starfarer.api.impl.campaign.rulecmd.salvage.AICores;
 import com.fs.starfarer.api.util.Misc.Token;
 
+import omegacoreeverywhere.Safe;
+
 /**
  * The base game's AI core turn-in, with an Omega core worth 500 times its usual reputation.
  *
  * The base game already takes Omega cores (a 1,000,000 credit bounty and 15 reputation, each times
  * the faction's own rate). Our rule only wins over the base game's when the player carries an
  * Omega core; the bounty and every other core stay as the base game has them.
+ *
+ * If our part fails, the base game's turn-in takes over: our rule does not match, or the
+ * reputation is the base game's.
  *
  * OCE_OmegaTurnIn playerHasOmegaCores
  * OCE_OmegaTurnIn selectCores
@@ -30,15 +35,27 @@ public class OCE_OmegaTurnIn extends AICores {
 
     @Override
     public boolean execute(String ruleId, InteractionDialogAPI dialog, List<Token> params, Map<String, MemoryAPI> memoryMap) {
-        if ("playerHasOmegaCores".equals(params.get(0).getString(memoryMap))) {
-            CampaignFleetAPI fleet = Global.getSector().getPlayerFleet();
-            return fleet != null && fleet.getCargo().getCommodityQuantity(Commodities.OMEGA_CORE) >= 1f;
+        // A command that cannot be read counts as the check, which then answers no: the base game's
+        // rule handles the turn-in.
+        boolean check = Safe.get("the Omega core turn-in",
+                () -> "playerHasOmegaCores".equals(params.get(0).getString(memoryMap)), true);
+        if (check) {
+            return Safe.get("the Omega core turn-in", () -> {
+                CampaignFleetAPI fleet = Global.getSector().getPlayerFleet();
+                return fleet != null && fleet.getCargo().getCommodityQuantity(Commodities.OMEGA_CORE) >= 1f;
+            }, false);
         }
         return super.execute(ruleId, dialog, params, memoryMap);
     }
 
     @Override
     protected float computeCoreReputationValue(CargoAPI cargo) {
+        Float omega = Safe.get("the Omega core turn-in", () -> omegaReputation(cargo), null);
+        if (omega != null) return omega;
+        return Safe.get("the base game's AI core turn-in", () -> super.computeCoreReputationValue(cargo), 0f);
+    }
+
+    private float omegaReputation(CargoAPI cargo) {
         float rep = 0f;
         for (CargoStackAPI stack : cargo.getStacksCopy()) {
             CommoditySpecAPI spec = stack.getResourceIfResource();

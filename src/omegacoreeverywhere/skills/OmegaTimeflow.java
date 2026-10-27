@@ -4,6 +4,7 @@ import com.fs.starfarer.api.characters.ShipSkillEffect;
 import com.fs.starfarer.api.combat.MutableShipStatsAPI;
 import com.fs.starfarer.api.combat.ShipAPI.HullSize;
 
+import omegacoreeverywhere.Safe;
 import omegacoreeverywhere.Settings;
 
 /** The perk of an Omega core captaining one of the player's ships. The amount is a LunaLib setting. */
@@ -13,12 +14,13 @@ public class OmegaTimeflow {
 
         @Override
         public void apply(MutableShipStatsAPI stats, HullSize hullSize, String id, float level) {
-            stats.getTimeMult().modifyMult(id, 1f + Settings.captainTimeflow() / 100f);
+            Safe.run("the Omega Timeflow skill",
+                    () -> stats.getTimeMult().modifyMult(id, 1f + Settings.captainTimeflow() / 100f));
         }
 
         @Override
         public void unapply(MutableShipStatsAPI stats, HullSize hullSize, String id) {
-            stats.getTimeMult().unmodify(id);
+            Safe.run("the Omega Timeflow skill", () -> stats.getTimeMult().unmodify(id));
         }
 
         @Override

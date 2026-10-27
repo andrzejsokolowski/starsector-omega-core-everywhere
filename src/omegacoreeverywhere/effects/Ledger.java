@@ -7,13 +7,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
-import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.combat.MutableStat;
 import com.fs.starfarer.api.combat.MutableStat.StatMod;
 import com.fs.starfarer.api.combat.StatBonus;
+
+import omegacoreeverywhere.Safe;
 
 /**
  * Every change this mod makes to the game, with the way to undo it.
@@ -35,8 +34,6 @@ final class Ledger {
             this.release = release;
         }
     }
-
-    private static final Logger log = Global.getLogger(Ledger.class);
 
     private final Map<Object, Map<String, Hold>> holds = new IdentityHashMap<>();
     private final Map<MarketAPI, Boolean> dirty = new IdentityHashMap<>();
@@ -139,13 +136,7 @@ final class Ledger {
             }
             if (byId.isEmpty()) targets.remove();
         }
-        for (Runnable release : stale) {
-            try {
-                release.run();
-            } catch (RuntimeException e) {
-                log.error("Omega Core Everywhere: could not undo an Omega core effect", e);
-            }
-        }
+        for (Runnable release : stale) Safe.run("undoing an Omega core effect", release);
 
         if (!reapply) {
             dirty.clear();
@@ -154,6 +145,7 @@ final class Ledger {
         if (dirty.isEmpty()) return;
         List<MarketAPI> markets = new ArrayList<>(dirty.keySet());
         dirty.clear();
-        for (MarketAPI market : markets) market.reapplyIndustries();
+        // Another mod's building can fail while its colony is recalculated: that must not crash here either.
+        for (MarketAPI market : markets) Safe.run("recalculating a colony", market::reapplyIndustries);
     }
 }
