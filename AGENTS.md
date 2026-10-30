@@ -73,7 +73,10 @@ after Andrzej confirmed the core picker in game). Later changes follow the relea
 - `src/omegacoreeverywhere/ships/OmegaArmamentSupport` - Armament Support System (Omega) for Special
   Hullmod Upgrades (`mayu_specialupgrades`). Plain base game code: the Omega core is used up through
   `getRequiredItem()`. Hidden at startup without that mod, known while its Alpha upgrade is
-  (`effects/ShipUpgrades`, held in the `Ledger`), follows its three LunaLib toggles.
+  (`effects/ShipUpgrades`, held in the `Ledger`), follows its three LunaLib toggles. Only that
+  mod's Alpha, Beta and Gamma core upgrades keep it off a ship, and the refusal names the one in the
+  way. Never refuse because of a hidden hull mod (Exotica's subcores): 1.2.0 did, and players with an
+  Exotica subcore they could not see were blocked.
   `ships/OmegaCoreLoss` takes it off ships disabled or destroyed in combat.
 - `src/omegacoreeverywhere/exotica/` - the only classes that import Exotica Technologies:
   `SubsumedOmegaCore`, `OmegaSubcore` and their helper `OmegaExotics`. Exotica loads the two exotics

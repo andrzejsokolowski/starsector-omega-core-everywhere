@@ -39,10 +39,15 @@ public class OmegaArmamentSupport extends BaseHullMod {
 
     public static final String SHU_MOD_ID = "mayu_specialupgrades";
     public static final String SHU_ALPHA = "specialsphmod_alpha_core_upgrades";
-    private static final String[] SHU_CORES = {
-            SHU_ALPHA, "specialsphmod_beta_core_upgrades", "specialsphmod_gamma_core_upgrades"};
-    /** Exotica Technologies' subcores also run the fire control. */
-    private static final String[] SUBCORES = {"et_alphasubcore", "et_daemoncore", OmegaSubcoreHullmod.ID};
+    /**
+     * Special Hullmod Upgrades' own core upgrades, the only hull mods that keep this one off a ship
+     * (that mod's own rule). Exotica's subcores do not: they are hidden from the hull mod list, so a
+     * player cannot see what is in the way (OCE-9, 1.2.1). The Omega Subcore yields to this hull mod.
+     */
+    private static final String[][] SHU_CORES = {
+            {SHU_ALPHA, "Armament Support System (Alpha)"},
+            {"specialsphmod_beta_core_upgrades", "Armament Support System (Beta)"},
+            {"specialsphmod_gamma_core_upgrades", "Armament Support System (Gamma)"}};
 
     public static final float AUTOFIRE_BONUS = 100f;
     public static final float TURRET_TURN_BONUS = 100f;
@@ -63,13 +68,11 @@ public class OmegaArmamentSupport extends BaseHullMod {
 
     /** A Special Hullmod Upgrades toggle, false when that mod or its setting is missing. */
     static boolean shuSetting(String field) {
-        if (!Global.getSettings().getModManager().isModEnabled(SHU_MOD_ID)) return false;
-        try {
+        return Safe.get("reading a Special Hullmod Upgrades setting", () -> {
+            if (!Global.getSettings().getModManager().isModEnabled(SHU_MOD_ID)) return false;
             Boolean value = LunaSettings.getBoolean(SHU_MOD_ID, field);
             return value != null && value;
-        } catch (RuntimeException e) {
-            return false;
-        }
+        }, false);
     }
 
     static boolean coresStack() {
@@ -84,11 +87,18 @@ public class OmegaArmamentSupport extends BaseHullMod {
         return shuSetting("shu_disableIncreasedDPAICoresToggle");
     }
 
-    private static boolean hasAny(ShipVariantAPI variant, String[] ids) {
-        for (String id : ids) {
-            if (variant.hasHullMod(id)) return true;
-        }
-        return false;
+    /**
+     * The name of the core upgrade that keeps this hull mod off the ship, or null. If the ship cannot
+     * be read, nothing is in the way: refusing a ship for no visible reason is worse.
+     */
+    private static String blocker(ShipAPI ship) {
+        return Safe.get(WHERE, () -> {
+            if (ship == null || ship.getVariant() == null || coresStack()) return null;
+            for (String[] core : SHU_CORES) {
+                if (ship.getVariant().hasHullMod(core[0])) return core[1];
+            }
+            return null;
+        }, null);
     }
 
     private static final String WHERE = "Armament Support System (Omega)";
@@ -125,8 +135,8 @@ public class OmegaArmamentSupport extends BaseHullMod {
     public void applyEffectsAfterShipCreation(ShipAPI ship, String id) {
         Safe.run(WHERE, () -> {
             if (coresStack()) return;
-            for (String core : SHU_CORES) {
-                if (ship.getVariant().hasHullMod(core)) ship.getVariant().removeMod(core);
+            for (String[] core : SHU_CORES) {
+                if (ship.getVariant().hasHullMod(core[0])) ship.getVariant().removeMod(core[0]);
             }
         });
     }
@@ -134,21 +144,16 @@ public class OmegaArmamentSupport extends BaseHullMod {
     /** Without its Omega core requirement the hull mod would be free, so then it is not offered at all. */
     @Override
     public boolean isApplicableToShip(ShipAPI ship) {
-        return Safe.get(WHERE, () -> {
-            if (ship == null || ship.getVariant() == null || getRequiredItem() == null) return false;
-            if (hasAny(ship.getVariant(), SUBCORES)) return false;
-            return coresStack() || !hasAny(ship.getVariant(), SHU_CORES);
-        }, false);
+        if (ship == null || getRequiredItem() == null) return false;
+        return blocker(ship) == null;
     }
 
     @Override
     public String getUnapplicableReason(ShipAPI ship) {
-        return Safe.get(WHERE, () -> {
-            if (ship != null && ship.getVariant() != null && !isApplicableToShip(ship)) {
-                return "Incompatible with installed AI core";
-            }
-            return super.getUnapplicableReason(ship);
-        }, null);
+        String core = blocker(ship);
+        if (core != null) return "Incompatible with " + core;
+        if (getRequiredItem() == null) return "The Omega core it needs could not be found";
+        return null;
     }
 
     @Override
