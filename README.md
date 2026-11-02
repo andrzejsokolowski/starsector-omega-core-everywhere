@@ -53,7 +53,8 @@ Both are installed with an Omega core in Exotica's menu. Computer fleets never h
 It uses up an Omega core when installed: autofire accuracy +100%, turret turn rate +100%, every
 weapon (missiles included) costs 3/5/8 OP less by size, deployment cost +25%. It is learned together
 with the Alpha upgrade and follows Special Hullmod Upgrades' settings for deployment cost, stacking
-core upgrades and losing the core with the ship.
+core upgrades and losing the core with the ship. On a ship with several sections it goes on the main
+section, and one Omega core covers every section.
 
 Take the Omega exotics and Armament Support System (Omega) off your ships before removing this mod
 from a save.

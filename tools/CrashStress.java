@@ -149,6 +149,7 @@ public class CrashStress {
 
         // Hull mods, in the refit screen and in combat
         for (String mod : new String[] {"omegacoreeverywhere.ships.OmegaArmamentSupport",
+                "omegacoreeverywhere.ships.OmegaArmamentSupportModule", "omegacoreeverywhere.ships.OmegaArmamentSupportLink",
                 "omegacoreeverywhere.ships.OmegaSubcoreHullmod"}) {
             Object h = Class.forName(mod).getConstructor().newInstance();
             Class<?> c = h.getClass();

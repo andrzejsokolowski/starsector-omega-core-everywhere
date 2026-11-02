@@ -31,6 +31,17 @@ final class ShipUpgrades {
         if (++frames < CLEANUP_FRAMES) return;
         frames = 0;
         dropOrphanCarriers();
+        syncSections();
+    }
+
+    /** Armament Support System (Omega)'s copies on the other sections follow the main section. */
+    private static void syncSections() {
+        CampaignFleetAPI fleet = Global.getSector().getPlayerFleet();
+        if (fleet == null) return;
+        for (FleetMemberAPI member : fleet.getFleetData().getMembersListCopy()) {
+            ShipVariantAPI variant = member.getVariant();
+            if (variant != null && !variant.getModuleSlots().isEmpty()) OmegaArmamentSupport.syncSections(variant);
+        }
     }
 
     private static void learnWithAlpha(Ledger ledger) {

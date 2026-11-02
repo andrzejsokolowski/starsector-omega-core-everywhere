@@ -3,6 +3,7 @@ package omegacoreeverywhere.ships;
 import java.awt.Color;
 
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.campaign.CampaignUIAPI.CoreUITradeMode;
 import com.fs.starfarer.api.campaign.CargoAPI.CargoItemType;
 import com.fs.starfarer.api.campaign.CargoStackAPI;
@@ -11,7 +12,9 @@ import com.fs.starfarer.api.combat.BaseHullMod;
 import com.fs.starfarer.api.combat.MutableShipStatsAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.ShipAPI.HullSize;
+import com.fs.starfarer.api.combat.ShipHullSpecAPI.ShipTypeHints;
 import com.fs.starfarer.api.combat.ShipVariantAPI;
+import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.ids.Commodities;
 import com.fs.starfarer.api.impl.campaign.ids.Stats;
 import com.fs.starfarer.api.ui.Alignment;
@@ -30,12 +33,21 @@ import omegacoreeverywhere.Safe;
  * It follows the same three Special Hullmod Upgrades settings as the Alpha upgrade: the deployment
  * cost increase, the incompatibility between core upgrades, and the core being lost with the ship.
  *
+ * A ship made of several sections takes it on the main section only, and one Omega core covers the
+ * whole ship, as with Special Hullmod Upgrades: every other section gets the hidden
+ * {@link OmegaArmamentSupportModule} with the same weapon bonuses, and the hidden
+ * {@link OmegaArmamentSupportLink} on the main section takes those off again once this hull mod is gone.
+ *
  * Every method the game calls goes through {@link Safe}: on an error the hull mod does nothing, and
  * cannot be installed, instead of crashing the refit screen or a battle.
  */
 public class OmegaArmamentSupport extends BaseHullMod {
 
     public static final String ID = "oce_omega_core_upgrades";
+    /** On every other section of a ship that has this hull mod on its main section. */
+    public static final String MODULE_ID = "oce_omega_core_module_extension";
+    /** On the main section while the other sections carry {@link #MODULE_ID}. */
+    public static final String LINK_ID = "oce_omega_core_link";
 
     public static final String SHU_MOD_ID = "mayu_specialupgrades";
     public static final String SHU_ALPHA = "specialsphmod_alpha_core_upgrades";
@@ -115,15 +127,57 @@ public class OmegaArmamentSupport extends BaseHullMod {
     }
 
     private static void applyStats(MutableShipStatsAPI stats, String id) {
+        applyWeaponStats(stats, id);
+        if (!noDeploymentPenalty()) {
+            stats.getDynamic().getMod(Stats.DEPLOYMENT_POINTS_MOD).modifyPercent(id, DEPLOYMENT_COST_INCREASE);
+        }
+    }
+
+    /** What every section gets. The deployment cost belongs to the main section alone. */
+    static void applyWeaponStats(MutableShipStatsAPI stats, String id) {
         stats.getAutofireAimAccuracy().modifyFlat(id, AUTOFIRE_BONUS / 100f);
         stats.getWeaponTurnRateBonus().modifyPercent(id, TURRET_TURN_BONUS);
         stats.getBeamWeaponTurnRateBonus().modifyPercent(id, TURRET_TURN_BONUS);
         reduce(stats, id, REDUCTION_SMALL, Stats.SMALL_BALLISTIC_MOD, Stats.SMALL_ENERGY_MOD, Stats.SMALL_MISSILE_MOD);
         reduce(stats, id, REDUCTION_MEDIUM, Stats.MEDIUM_BALLISTIC_MOD, Stats.MEDIUM_ENERGY_MOD, Stats.MEDIUM_MISSILE_MOD);
         reduce(stats, id, REDUCTION_LARGE, Stats.LARGE_BALLISTIC_MOD, Stats.LARGE_ENERGY_MOD, Stats.LARGE_MISSILE_MOD);
-        if (!noDeploymentPenalty()) {
-            stats.getDynamic().getMod(Stats.DEPLOYMENT_POINTS_MOD).modifyPercent(id, DEPLOYMENT_COST_INCREASE);
+    }
+
+    /**
+     * Gives every other section the hidden copy while the main section has this hull mod, and takes
+     * the copies off once it is gone. Called from the main section in the refit screen and in combat,
+     * and from the campaign every second for the player's fleet.
+     */
+    public static void syncSections(ShipVariantAPI main) {
+        if (main == null) return;
+        boolean on = main.hasHullMod(ID);
+        boolean sections = false;
+        for (String slot : main.getModuleSlots()) {
+            ShipVariantAPI section = main.getModuleVariant(slot);
+            if (section == null) continue;
+            sections = true;
+            if (on && !section.hasHullMod(MODULE_ID)) section.addPermaMod(MODULE_ID);
+            if (!on && section.hasHullMod(MODULE_ID)) section.removePermaMod(MODULE_ID);
         }
+        if (on && sections && !main.hasHullMod(LINK_ID)) main.addPermaMod(LINK_ID);
+        if (!on && main.hasHullMod(LINK_ID)) main.removePermaMod(LINK_ID);
+    }
+
+    /**
+     * True for a section other than the main one. In the refit screen the game does not always mark
+     * them, so this also asks the hull and, as Special Hullmod Upgrades does, the player's fleet: only
+     * a main section is a fleet member.
+     */
+    static boolean isSection(ShipAPI ship) {
+        if (ship.isStationModule() || ship.getParentStation() != null) return true;
+        if (ship.getHullSpec() != null && ship.getHullSpec().getHints().contains(ShipTypeHints.MODULE)) return true;
+        String member = ship.getFleetMemberId();
+        CampaignFleetAPI fleet = Global.getSector() == null ? null : Global.getSector().getPlayerFleet();
+        if (member == null || fleet == null) return false;
+        for (FleetMemberAPI m : fleet.getFleetData().getMembersListCopy()) {
+            if (member.equals(m.getId())) return false;
+        }
+        return true;
     }
 
     private static void reduce(MutableShipStatsAPI stats, String id, int amount, String... mods) {
@@ -134,6 +188,7 @@ public class OmegaArmamentSupport extends BaseHullMod {
     @Override
     public void applyEffectsAfterShipCreation(ShipAPI ship, String id) {
         Safe.run(WHERE, () -> {
+            syncSections(ship.getVariant());
             if (coresStack()) return;
             for (String[] core : SHU_CORES) {
                 if (ship.getVariant().hasHullMod(core[0])) ship.getVariant().removeMod(core[0]);
@@ -156,10 +211,15 @@ public class OmegaArmamentSupport extends BaseHullMod {
         return null;
     }
 
+    /** Not added to another section, but one already there (put on before 1.2.2) can still come off. */
+    private static boolean blockedSection(ShipAPI ship) {
+        return ship != null && ship.getVariant() != null && !ship.getVariant().hasHullMod(ID) && isSection(ship);
+    }
+
     @Override
     public boolean canBeAddedOrRemovedNow(ShipAPI ship, MarketAPI marketOrNull, CoreUITradeMode mode) {
         return Safe.get(WHERE, () -> {
-            if (ship != null && ship.isStationModule()) return false;
+            if (blockedSection(ship)) return false;
             return super.canBeAddedOrRemovedNow(ship, marketOrNull, mode);
         }, false);
     }
@@ -167,7 +227,7 @@ public class OmegaArmamentSupport extends BaseHullMod {
     @Override
     public String getCanNotBeInstalledNowReason(ShipAPI ship, MarketAPI marketOrNull, CoreUITradeMode mode) {
         return Safe.get(WHERE, () -> {
-            if (ship != null && ship.isStationModule()) return "Can only be installed on the main module";
+            if (blockedSection(ship)) return "Can only be installed on the main section";
             return super.getCanNotBeInstalledNowReason(ship, marketOrNull, mode);
         }, null);
     }

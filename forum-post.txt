@@ -54,6 +54,7 @@ Covers the base game, Industrial Evolution, AoTD Vaults of Knowledge, AoTD Seats
 [li][b]Armament Support System (Omega):[/b] the Omega tier of the Alpha, Beta and Gamma core upgrades. Uses up an Omega core when installed.[/li]
 [li]Autofire accuracy +100%, turret turn rate +100%, every weapon (missiles included) costs 3/5/8 OP less by size, deployment cost +25%.[/li]
 [li]Learned together with the Alpha upgrade. Follows Special Hullmod Upgrades' settings for deployment cost, stacking core upgrades and losing the core with the ship.[/li]
+[li]On a ship with several sections it goes on the main section, and one Omega core covers every section.[/li]
 [/list]
 [hr][center][size=12pt][b]Industrial Evolution Supercomputer Fix[/b][/size][/center][hr]
 [list]
@@ -169,6 +170,7 @@ This mod is under the CC0 (Creative Commons Zero) License, allowing you to do wh
 [/spoiler]
 
 [spoiler=Version log]
+1.2.2 - Armament Support System (Omega) on ships with several sections: it goes on the main section only, and one Omega core now covers every section, as with Special Hullmod Upgrades' own core upgrades.
 1.2.1 - Armament Support System (Omega) can be installed on ships with an Exotica Technologies subcore. Only Special Hullmod Upgrades' own core upgrades keep it out, and the refit screen names the one in the way.
 1.2.0 - AoTD Seats of Power: an Omega core in the Hexagon doubles fleet size, in the Capital Complex it doubles population growth. Every part of the mod now switches itself off instead of crashing the game if something goes wrong.
 1.1.2 - fixed a crash when saving with an Omega core in Commerce, a Trade Outpost or Underworld, a Resort Center, a Terminus or Domed Cities.

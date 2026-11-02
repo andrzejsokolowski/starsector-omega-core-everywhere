@@ -77,7 +77,11 @@ after Andrzej confirmed the core picker in game). Later changes follow the relea
   mod's Alpha, Beta and Gamma core upgrades keep it off a ship, and the refusal names the one in the
   way. Never refuse because of a hidden hull mod (Exotica's subcores): 1.2.0 did, and players with an
   Exotica subcore they could not see were blocked.
-  `ships/OmegaCoreLoss` takes it off ships disabled or destroyed in combat.
+  `ships/OmegaCoreLoss` takes it off ships disabled or destroyed in combat. Ships with several
+  sections: main section only (`isSection` also uses Special Hullmod Upgrades' fleet member check,
+  because the refit screen does not mark sections), and `syncSections` puts the hidden
+  `ships/OmegaArmamentSupportModule` on every other section, with `ships/OmegaArmamentSupportLink` on
+  the main section to take them off again (also run from `effects/ShipUpgrades`).
 - `src/omegacoreeverywhere/exotica/` - the only classes that import Exotica Technologies:
   `SubsumedOmegaCore`, `OmegaSubcore` and their helper `OmegaExotics`. Exotica loads the two exotics
   from `data/config/exotics.json` (texts in `data/strings/strings.json`, icons under `graphics.exotics`
