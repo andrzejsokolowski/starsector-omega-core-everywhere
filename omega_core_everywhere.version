@@ -1,5 +1,6 @@
 {
 	"masterVersionFile":"https://raw.githubusercontent.com/andrzejsokolowski/starsector-omega-core-everywhere/main/omega_core_everywhere.version",
+	"changelogURL":"https://raw.githubusercontent.com/andrzejsokolowski/starsector-omega-core-everywhere/main/changelog.txt",
 	"modName":"Omega Core Everywhere",
 	"modThreadId":36168,
 	"modVersion": {

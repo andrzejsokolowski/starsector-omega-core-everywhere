@@ -1,0 +1,31 @@
+Version 1.2.2 (2026-11-02)
+- Armament Support System (Omega) on ships with several sections: it goes on the main section only, and one Omega core now covers every section, as with Special Hullmod Upgrades' own core upgrades.
+
+Version 1.2.1 (2026-10-30)
+- Armament Support System (Omega) can be installed on ships with an Exotica Technologies subcore. Only Special Hullmod Upgrades' own core upgrades keep it out, and the refit screen names the one in the way.
+
+Version 1.2.0 (2026-10-27)
+- AoTD Seats of Power: an Omega core in the Hexagon doubles fleet size, in the Capital Complex it doubles population growth.
+- Every part of the mod now switches itself off instead of crashing the game if something goes wrong.
+
+Version 1.1.2 (2026-10-27)
+- Fixed a crash when saving with an Omega core in Commerce, a Trade Outpost or Underworld, a Resort Center, a Terminus or Domed Cities.
+
+Version 1.1.1 (2026-10-26)
+- Fixed a crash when opening Exotica Technologies' exotics list with Exotica 2.0.x.
+
+Version 1.1.0 (2026-10-25)
+- Omega core captains get Omega Timeflow: time runs 25% faster for their ship.
+- An Omega core turned in to a faction gives 500 times the reputation.
+- New with Exotica Technologies: Subsumed Omega Core and Omega Subcore.
+- New with Special Hullmod Upgrades: Armament Support System (Omega).
+
+Version 1.0.0 (2026-10-18)
+- Long effects get a shorter wording in the core picker, with the full text in the building's tooltip.
+- Production buildings no longer say the facility struggles to keep up.
+
+Version 0.2.4 (2026-10-18)
+- 0.2.1 to 0.2.4: the core picker and building tooltips show the Omega core's effect instead of "No effect".
+
+Version 0.2.0 (2026-10-18)
+- First release: Omega core drops, Omega core effects in colony buildings for the base game, Industrial Evolution, Vaults of Knowledge and TASC, and the fix for the Industrial Evolution Supercomputer crash.
