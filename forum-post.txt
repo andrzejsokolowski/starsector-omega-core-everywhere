@@ -16,7 +16,7 @@ Every other building gets an Omega effect of its own, from doubled patrol fleets
 Covers the base game, Industrial Evolution, AoTD Vaults of Knowledge, AoTD Seats of Power and Terraforming & Station Construction. None of them is required.
 
 
-[color=red]Requires [b]LunaLib[/b] and [b][url=https://github.com/andrzejsokolowski/starsector-oddisz-commons/releases/latest]OddiszCommons[/url][/b].[/color]
+[color=red]Requires [b]LunaLib[/b] and [b][url=https://fractalsoftworks.com/forum/index.php?topic=36282]OddiszCommons[/url][/b].[/color]
 [/b][/center]
 [center]
 [hr][center][size=12pt][b]Omega Core Drops[/b][/size][/center][hr]
