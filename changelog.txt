@@ -1,3 +1,6 @@
+Version 1.2.3 (2026-11-09)
+- Now requires OddiszCommons 0.2.0, which keeps this mod's colony changes in its shared ledger. No gameplay changes.
+
 Version 1.2.2 (2026-11-02)
 - Armament Support System (Omega) on ships with several sections: it goes on the main section only, and one Omega core now covers every section, as with Special Hullmod Upgrades' own core upgrades.
 

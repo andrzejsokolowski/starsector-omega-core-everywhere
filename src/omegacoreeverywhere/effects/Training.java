@@ -1,5 +1,7 @@
 package omegacoreeverywhere.effects;
 
+import oddiszcommons.ledger.Ledger;
+
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;

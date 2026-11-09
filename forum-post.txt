@@ -16,7 +16,7 @@ Every other building gets an Omega effect of its own, from doubled patrol fleets
 Covers the base game, Industrial Evolution, AoTD Vaults of Knowledge, AoTD Seats of Power and Terraforming & Station Construction. None of them is required.
 
 
-[color=red]Requires [b]LunaLib[/b].[/color]
+[color=red]Requires [b]LunaLib[/b] and [b][url=https://github.com/andrzejsokolowski/starsector-oddisz-commons/releases/latest]OddiszCommons[/url][/b].[/color]
 [/b][/center]
 [center]
 [hr][center][size=12pt][b]Omega Core Drops[/b][/size][/center][hr]
@@ -170,6 +170,7 @@ This mod is under the CC0 (Creative Commons Zero) License, allowing you to do wh
 [/spoiler]
 
 [spoiler=Version log]
+1.2.3 - now requires OddiszCommons 0.2.0, which keeps this mod's colony changes in its shared ledger. No gameplay changes.
 1.2.2 - Armament Support System (Omega) on ships with several sections: it goes on the main section only, and one Omega core now covers every section, as with Special Hullmod Upgrades' own core upgrades.
 1.2.1 - Armament Support System (Omega) can be installed on ships with an Exotica Technologies subcore. Only Special Hullmod Upgrades' own core upgrades keep it out, and the refit screen names the one in the way.
 1.2.0 - AoTD Seats of Power: an Omega core in the Hexagon doubles fleet size, in the Capital Complex it doubles population growth. Every part of the mod now switches itself off instead of crashing the game if something goes wrong.

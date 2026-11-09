@@ -1,5 +1,7 @@
 package omegacoreeverywhere.effects;
 
+import oddiszcommons.ledger.Ledger;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
@@ -69,9 +71,9 @@ public final class OmegaEffects implements EveryFrameScript, EconomyTickListener
 
     private static OmegaEffects current;
 
-    private final Ledger ledger = new Ledger();
+    private final Ledger ledger = new Ledger("Omega Core Everywhere");
     /** Survives {@link #suspend()}: the Supercomputer fix, which a save is safer with than without. */
-    private final Ledger lasting = new Ledger();
+    private final Ledger lasting = new Ledger("Omega Core Everywhere");
     private final ShipUpgrades upgrades = new ShipUpgrades();
     private final MarketImmigrationModifier growth = new Growth();
     private final boolean indEvo = Global.getSettings().getModManager().isModEnabled(INDEVO_ID);

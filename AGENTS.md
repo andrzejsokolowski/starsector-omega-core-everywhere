@@ -40,8 +40,8 @@ after Andrzej confirmed the core picker in game). Later changes follow the relea
   effect. Suspended by the plugin before every save and resumed after it.
 - `src/omegacoreeverywhere/effects/Effect` - building id to effect, plus the tooltip sentence.
   A new building starts here.
-- `src/omegacoreeverywhere/effects/Ledger` - every stat modifier and other change the mod makes,
-  with its undo. Anything not re-asserted in a frame is undone; everything is undone before a save.
+- The `Ledger` is OddiszCommons' `oddiszcommons.ledger.Ledger` (a required mod since 1.2.3): every
+  stat modifier and other change the mod makes, with its undo. Anything not re-asserted in a frame is undone; everything is undone before a save.
 - `src/omegacoreeverywhere/effects/IndEvoEffects`, `VokEffects` - the only classes that import
   Industrial Evolution and AoTD Vaults of Knowledge. Both mods are optional for players, so nothing
   but `OmegaEffects` may call these two, and only behind its `indEvo` / `vok` checks. TASC effects

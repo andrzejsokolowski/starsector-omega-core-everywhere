@@ -1,5 +1,7 @@
 package omegacoreeverywhere.effects;
 
+import oddiszcommons.ledger.Ledger;
+
 import com.fs.starfarer.api.combat.MutableStat;
 import com.fs.starfarer.api.combat.MutableStat.StatMod;
 
