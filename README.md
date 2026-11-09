@@ -77,7 +77,7 @@ and this mod's drop settings do nothing.
 ## Requirements
 
 - [LunaLib](https://fractalsoftworks.com/forum/index.php?topic=25658.0)
-- [OddiszCommons](https://fractalsoftworks.com/forum/index.php?topic=36282) 0.2.0 or newer
+- [OddiszCommons](https://fractalsoftworks.com/forum/index.php?topic=36282) 0.2.0 or newer (any later version works)
 
 ## Building
 

@@ -15,6 +15,7 @@ public class OmegaCoreEverywherePlugin extends BaseModPlugin {
     /** Each step runs on its own: one that fails is logged and the rest still run (see {@link Safe}). */
     @Override
     public void onApplicationLoad() {
+        OddiszCommonsVersion.require();
         // LunaLib keeps its listeners for the whole session, so register once.
         Safe.run("registering the LunaLib settings listener", () -> {
             if (!LunaSettings.hasSettingsListenerOfClass(SettingsListener.class)) {
