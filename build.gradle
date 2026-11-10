@@ -142,7 +142,7 @@ tasks.named('check') {
 // Only what the game loads.
 def releaseFiles = copySpec {
     from(projectDir) {
-        include 'mod_info.json', 'omega_core_everywhere.version'
+        include 'mod_info.json', 'omega_core_everywhere.version', 'icon.png'
         include 'data/**', 'graphics/**', 'jars/OmegaCoreEverywhere.jar'
     }
 }
