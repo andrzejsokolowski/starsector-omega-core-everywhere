@@ -22,16 +22,11 @@ import omegacoreeverywhere.ships.OmegaSubcoreHullmod;
  */
 final class ShipUpgrades {
 
-    private static final int CLEANUP_FRAMES = 60;
-
     private final boolean shu = Global.getSettings().getModManager().isModEnabled(OmegaArmamentSupport.SHU_MOD_ID);
     private final boolean exotica = Global.getSettings().getModManager().isModEnabled(OmegaExotics.EXOTICA_ID);
-    private int frames;
-
     void tick(Ledger ledger) {
         if (shu) learnWithAlpha(ledger);
-        if (++frames < CLEANUP_FRAMES) return;
-        frames = 0;
+        // Once a pass, so once a second (it was every 60 frames when the pass ran every frame).
         dropOrphanCarriers();
         syncSections();
     }

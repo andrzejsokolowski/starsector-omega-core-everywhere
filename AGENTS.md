@@ -35,13 +35,16 @@ after Andrzej confirmed the core picker in game). Later changes follow the relea
   and sets `drop_prob_officer_omega_core`. Stands down when Astral Ascension
   (`Planetace_AstralAscension`) is enabled, because it sets the same values.
 - `src/omegacoreeverywhere/Settings` - LunaLib reads with defaults.
-- `src/omegacoreeverywhere/effects/OmegaEffects` - transient every-frame script and economy
-  listener. Walks the player's colonies, finds buildings holding an Omega core and asserts each
-  effect. Suspended by the plugin before every save and resumed after it.
+- `src/omegacoreeverywhere/effects/OmegaEffects` - transient script and economy listener. Once a
+  second of real time (`PassTimer`, also while paused, and at once after a save and on the first
+  unpaused frame, because cores go in while paused and the Supercomputer fix must beat the next day)
+  it walks the player's colonies, finds buildings holding an Omega core and asserts each effect.
+  Only the Omega artillery's faster firing runs every frame, for the colonies the last pass found.
+  Time-based effects get the game time since the previous pass. Tests in `test/` (JUnit). Suspended by the plugin before every save and resumed after it.
 - `src/omegacoreeverywhere/effects/Effect` - building id to effect, plus the tooltip sentence.
   A new building starts here.
 - The `Ledger` is OddiszCommons' `oddiszcommons.ledger.Ledger` (a required mod since 1.2.3): every
-  stat modifier and other change the mod makes, with its undo. Anything not re-asserted in a frame is undone; everything is undone before a save.
+  stat modifier and other change the mod makes, with its undo. Anything not re-asserted in a pass is undone; everything is undone before a save.
 - `src/omegacoreeverywhere/effects/IndEvoEffects`, `VokEffects` - the only classes that import
   Industrial Evolution and AoTD Vaults of Knowledge. Both mods are optional for players, so nothing
   but `OmegaEffects` may call these two, and only behind its `indEvo` / `vok` checks. TASC effects

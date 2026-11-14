@@ -20,7 +20,7 @@ public final class Settings {
                 DEFAULT_DROPS_ENABLED);
     }
 
-    /** Read every frame by the effects, so switching it takes hold at once. */
+    /** Read on every pass of the effects (once a second), so switching it takes hold at once. */
     public static boolean effectsEnabled() {
         return Safe.get("reading a LunaLib setting",
                 () -> LunaSettings.getBoolean(OmegaCoreEverywherePlugin.MOD_ID, "oce_effects_enabled"),

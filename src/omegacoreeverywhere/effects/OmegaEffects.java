@@ -43,7 +43,7 @@ import omegacoreeverywhere.Settings;
 /**
  * Gives Omega cores their effects in colony buildings.
  *
- * Nothing replaces a building. Every frame this walks the player's colonies, finds the buildings
+ * Nothing replaces a building. Once a second ({@link PassTimer}) this walks the player's colonies, finds the buildings
  * holding an Omega core and asserts the effect for each through the {@link Ledger}, which takes
  * the effect away again the moment it stops being asserted. Both the script and the listener are
  * transient, and {@link #suspend()} undoes everything before a save, so a save made with this mod
@@ -83,6 +83,12 @@ public final class OmegaEffects implements EveryFrameScript, EconomyTickListener
     /** How many running frames each protected building has been seen disrupted. */
     private Map<Industry, Integer> disrupted = new IdentityHashMap<>();
     private final Map<Industry, Float> exomatterDays = new IdentityHashMap<>();
+    private final PassTimer timer = new PassTimer();
+    /** Game seconds that ran (not paused) since the previous pass. */
+    private float sinceLastPass;
+    private boolean wasPaused;
+    /** Colonies whose artillery holds an Omega core, as of the last pass. */
+    private List<MarketAPI> artillery = new ArrayList<>();
     private boolean suspended;
     /** Something outside a single effect failed: every effect stays off until the game is loaded again. */
     private boolean failed;
@@ -112,7 +118,10 @@ public final class OmegaEffects implements EveryFrameScript, EconomyTickListener
     }
 
     public static void resume() {
-        if (current != null) current.suspended = false;
+        if (current == null) return;
+        current.suspended = false;
+        // The save took every effect off: put them back on the next frame, not a second later.
+        current.timer.forceNext();
     }
 
     static boolean hasOmega(Industry ind) {
@@ -144,20 +153,50 @@ public final class OmegaEffects implements EveryFrameScript, EconomyTickListener
             return;
         }
         try {
-            tick(amount);
+            frame(amount);
         } catch (Throwable t) {
             failed = true;
             Safe.failed("the Omega effects (all switched off until the game is loaded again)", t);
         }
     }
 
-    private void tick(float amount) {
+    /**
+     * The full pass runs once a second of real time ({@link PassTimer}), and on the first frame the
+     * game runs again after a pause: cores are put in while paused, and the Supercomputer fix must be
+     * in place before the next day turns. Only the Omega artillery runs every frame, for the colonies
+     * the last pass found it in, because it speeds up a firing script frame by frame.
+     */
+    private void frame(float amount) {
+        boolean paused = Global.getSector().isPaused();
+        if (!paused) {
+            sinceLastPass += amount;
+            if (wasPaused) timer.forceNext();
+            if (indEvo && !artillery.isEmpty()) {
+                guarded(Effect.ARTILLERY.name(), () -> {
+                    for (MarketAPI market : artillery) IndEvoEffects.artillery(market, amount);
+                });
+            }
+        }
+        wasPaused = paused;
+
+        long now = System.nanoTime();
+        if (!timer.due(now)) return;
+        timer.ran(now);
+        float elapsed = sinceLastPass;
+        sinceLastPass = 0f;
+        tick(elapsed);
+    }
+
+    /** @param elapsed game seconds that ran (not paused) since the previous pass */
+    private void tick(float elapsed) {
         SectorAPI sector = Global.getSector();
-        boolean paused = sector.isPaused();
-        float days = paused ? 0f : sector.getClock().convertToDays(amount);
+        // "Running": game time moved since the previous pass, so the buildings advanced in between.
+        boolean running = elapsed > 0f;
+        float days = running ? sector.getClock().convertToDays(elapsed) : 0f;
         boolean enabled = Settings.effectsEnabled();
 
         Map<Industry, Integer> stillDisrupted = new IdentityHashMap<>();
+        List<MarketAPI> artilleryNow = new ArrayList<>();
         boolean research = false;
         boolean academy = false;
 
@@ -174,18 +213,20 @@ public final class OmegaEffects implements EveryFrameScript, EconomyTickListener
                 }
                 if (!enabled || (ind.isBuilding() && !ind.isUpgrading())) continue;
 
-                if (effect == Effect.STATION) protect(ind, paused, stillDisrupted);
+                if (effect == Effect.STATION) protect(ind, running, stillDisrupted);
                 if (effect == Effect.SHIELD) {
-                    for (Industry other : market.getIndustries()) protect(other, paused, stillDisrupted);
+                    for (Industry other : market.getIndustries()) protect(other, running, stillDisrupted);
                 }
                 if (!ind.isFunctional()) continue;
 
                 if (effect == Effect.RESEARCH) research = true;
                 if (effect == Effect.ACADEMY) academy = true;
-                guarded(effect.name(), () -> apply(effect, market, ind, amount, days, paused));
+                if (effect == Effect.ARTILLERY) artilleryNow.add(market);
+                guarded(effect.name(), () -> apply(effect, market, ind, days));
             }
         }
         disrupted = stillDisrupted;
+        artillery = artilleryNow;
 
         if (enabled) {
             if (research && vok) guarded("RESEARCH_SPEED", () -> VokEffects.quadrupleResearch(ledger));
@@ -199,7 +240,8 @@ public final class OmegaEffects implements EveryFrameScript, EconomyTickListener
         lasting.sweep();
     }
 
-    private void apply(Effect effect, MarketAPI market, Industry ind, float amount, float days, boolean paused) {
+    /** @param days game days that ran since the previous pass (0 while paused) */
+    private void apply(Effect effect, MarketAPI market, Industry ind, float days) {
         String source = CORE + " (" + ind.getCurrentName() + ")";
         switch (effect) {
             case PRODUCTION:
@@ -215,7 +257,7 @@ public final class OmegaEffects implements EveryFrameScript, EconomyTickListener
                 break;
 
             case GROWTH:
-                // Re-added every frame to stay behind the buildings, which re-add themselves
+                // Re-added every pass to stay behind the buildings, which re-add themselves
                 // whenever the colony is reapplied: growth is doubled after everything else.
                 market.removeTransientImmigrationModifier(growth);
                 market.addTransientImmigrationModifier(growth);
@@ -261,7 +303,7 @@ public final class OmegaEffects implements EveryFrameScript, EconomyTickListener
                 ledger.mult(ind.getIncome(), INCOME, 2f, CORE);
                 break;
             case ARTILLERY:
-                if (indEvo) IndEvoEffects.artillery(market, paused ? 0f : amount);
+                // The faster firing runs every frame in frame(); here only the readiness.
                 for (CampaignFleetAPI fleet : market.getContainingLocation().getFleets()) {
                     if (!fleet.hasTag("IndEvo_ArtilleryFleet")) continue;
                     if (fleet.getMemoryWithoutUpdate().get("$stationMarket") == market) fullReadiness(fleet);
@@ -283,7 +325,7 @@ public final class OmegaEffects implements EveryFrameScript, EconomyTickListener
                 }
                 break;
             case EXOMATTER:
-                if (!paused) exomatter(market, ind, days);
+                if (days > 0f) exomatter(market, ind, days);
                 break;
 
             case PARK:
@@ -344,18 +386,18 @@ public final class OmegaEffects implements EveryFrameScript, EconomyTickListener
     }
 
     /**
-     * Ends a disruption, but only once the building has lived through it for a running frame:
+     * Ends a disruption, but only once the building has lived through it with game time running:
      * a building that never saw itself disrupted never runs its own recovery, and a station would
      * stay a wreck. A station still in a battle is left alone until the battle is over.
      */
-    private void protect(Industry ind, boolean paused, Map<Industry, Integer> stillDisrupted) {
+    private void protect(Industry ind, boolean running, Map<Industry, Integer> stillDisrupted) {
         if (!ind.isDisrupted() || (ind.isBuilding() && !ind.isUpgrading())) return;
         int seen = disrupted.getOrDefault(ind, 0);
         if (ind instanceof OrbitalStation) {
             CampaignFleetAPI fleet = ((OrbitalStation) ind).getStationFleet();
             if (fleet != null && fleet.getBattle() != null) seen = 0;
-            else if (!paused) seen++;
-        } else if (!paused) {
+            else if (running) seen++;
+        } else if (running) {
             seen++;
         }
         if (seen < 2) {
@@ -374,7 +416,7 @@ public final class OmegaEffects implements EveryFrameScript, EconomyTickListener
         float mult = access.getMult();
         if (mult <= 0f) return;
         float wanted = Math.max(0f, 10f / mult - (access.getFlatBonus() - ownNow));
-        // Rounding noise must not look like a change, or the colony would be reapplied every frame.
+        // Rounding noise must not look like a change, or the colony would be reapplied every pass.
         if (own != null && Math.abs(wanted - ownNow) < 0.005f) wanted = ownNow;
         ledger.flat(access, "oce_terminus", wanted, source, market);
     }

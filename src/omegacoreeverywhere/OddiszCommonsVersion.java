@@ -19,7 +19,12 @@ final class OddiszCommonsVersion {
 
     /** Stops the game at start with a clear message when OddiszCommons is older than 0.2.0. */
     static void require() {
-        ModSpecAPI spec = Global.getSettings().getModManager().getModSpec(ID);
+        ModSpecAPI spec;
+        try {
+            spec = Global.getSettings().getModManager().getModSpec(ID);
+        } catch (RuntimeException e) {
+            return; // Cannot look: let the game start rather than crash it here.
+        }
         if (spec == null) return; // The launcher already refuses to start without it.
         if (atLeast(spec.getVersion(), MIN_MAJOR, MIN_MINOR)) return;
         throw new RuntimeException("Omega Core Everywhere needs OddiszCommons " + MIN_MAJOR + "." + MIN_MINOR

@@ -23,7 +23,7 @@ final class VokEffects {
     /**
      * VoK divides research time by (1 + bonus). To make research exactly four times as fast as
      * it would otherwise be, the bonus has to grow with everything else that adds to it, so it is
-     * worked out again every frame from what the others currently give.
+     * worked out again on every pass from what the others currently give.
      */
     static void quadrupleResearch(Ledger ledger) {
         AoTDMainResearchManager research = AoTDMainResearchManager.getInstance();

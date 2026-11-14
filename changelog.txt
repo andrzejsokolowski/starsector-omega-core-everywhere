@@ -1,3 +1,6 @@
+Version 1.2.6 (2026-11-14)
+- Better frame rate on the campaign map: Omega core effects are now checked once a second instead of every frame, also while paused. Omega artillery still fires at its faster rate. A newly installed core takes effect at the latest when the game is unpaused.
+
 Version 1.2.5 (2026-11-10)
 - New gold icon in mod managers (TriOS) and in LunaLib's settings.
 
