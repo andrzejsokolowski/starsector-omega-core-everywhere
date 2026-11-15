@@ -176,6 +176,7 @@ This mod is under the CC0 (Creative Commons Zero) License, allowing you to do wh
 [/spoiler]
 
 [spoiler=Version log]
+1.3.0 - updated for Starsector 0.98.5a.
 1.2.7 - Omega Timeflow is now +10% (was +25%) and shows in your Omega core captain's skill list in the refit screen; the setting starts again at 10%. Production buildings that make nothing at the moment (a new starter farm such as AoTD's Monoculture Plots, a shortage) now show their Omega effect in the core picker instead of "No effect".
 1.2.6 - better frame rate on the campaign map: Omega core effects are now checked once a second instead of every frame, also while paused. Omega artillery still fires at its faster rate. A newly installed core takes effect at the latest when the game is unpaused.
 1.2.5 - new gold icon in mod managers (TriOS) and in LunaLib's settings.
