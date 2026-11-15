@@ -27,12 +27,15 @@ public final class Settings {
                 DEFAULT_EFFECTS_ENABLED);
     }
 
-    static final float DEFAULT_CAPTAIN_TIMEFLOW = 25f;
+    static final float DEFAULT_CAPTAIN_TIMEFLOW = 10f;
 
-    /** Percent faster timeflow for a ship captained by one of the player's Omega cores. 0 is off. */
+    /**
+     * Percent faster timeflow for a ship captained by one of the player's Omega cores. 0 is off.
+     * The setting id changed in 1.2.7 with the default (25 to 10), so old saved values do not carry over.
+     */
     public static float captainTimeflow() {
         Double value = Safe.get("reading a LunaLib setting",
-                () -> LunaSettings.getDouble(OmegaCoreEverywherePlugin.MOD_ID, "oce_captain_timeflow"), null);
+                () -> LunaSettings.getDouble(OmegaCoreEverywherePlugin.MOD_ID, "oce_captain_timeflow_pct"), null);
         if (value == null || value.isNaN()) return DEFAULT_CAPTAIN_TIMEFLOW;
         return (float) Math.max(0d, Math.min(200d, value));
     }

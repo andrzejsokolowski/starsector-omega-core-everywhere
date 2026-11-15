@@ -67,7 +67,7 @@ after Andrzej confirmed the core picker in game). Later changes follow the relea
 - `src/omegacoreeverywhere/skills/OmegaTutelage` - the skill effect, registered in
   `data/characters/skills/`.
 - `src/omegacoreeverywhere/effects/Captains` - puts the `oce_omega_timeflow` skill
-  (`skills/OmegaTimeflow`, amount from the LunaLib setting `oce_captain_timeflow`) on every Omega core
+  (`skills/OmegaTimeflow`, amount from the LunaLib setting `oce_captain_timeflow_pct`, default 10; renamed from `oce_captain_timeflow` in 1.2.7 so the old 25 default did not stick) on every Omega core
   captaining a ship in the player's fleet, through the `Ledger`. Enemy Omega ships never get it.
 - `src/omegacoreeverywhere/rulecmd/OCE_OmegaTurnIn` - the base game's `AICores` turn-in with the
   Omega core's reputation x500. `data/campaign/rules.csv` routes `aiCores_selectCores` to it only while

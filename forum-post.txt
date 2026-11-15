@@ -36,7 +36,7 @@ Covers the base game, Industrial Evolution, AoTD Vaults of Knowledge, AoTD Seats
 [/list]
 [hr][center][size=12pt][b]Omega Core Captains[/b][/size][/center][hr]
 [list]
-[li]The base game already lets an Omega core captain an automated ship. Your Omega core captains also get Omega Timeflow: time runs 25% faster for their ship.[/li]
+[li]The base game already lets an Omega core captain an automated ship. Your Omega core captains also get Omega Timeflow: time runs 10% faster for their ship.[/li]
 [li]The bonus can be changed in LunaLib's settings. Enemy Omega ships do not get it.[/li]
 [/list]
 [hr][center][size=12pt][b]Turning In Omega Cores[/b][/size][/center][hr]
@@ -170,6 +170,7 @@ This mod is under the CC0 (Creative Commons Zero) License, allowing you to do wh
 [/spoiler]
 
 [spoiler=Version log]
+1.2.7 - Omega Timeflow is now +10% (was +25%) and shows in your Omega core captain's skill list in the refit screen; the setting starts again at 10%. Production buildings that make nothing at the moment (a new starter farm such as AoTD's Monoculture Plots, a shortage) now show their Omega effect in the core picker instead of "No effect".
 1.2.6 - better frame rate on the campaign map: Omega core effects are now checked once a second instead of every frame, also while paused. Omega artillery still fires at its faster rate. A newly installed core takes effect at the latest when the game is unpaused.
 1.2.5 - new gold icon in mod managers (TriOS) and in LunaLib's settings.
 1.2.4 - works with any OddiszCommons from 0.2.0 on: the game no longer turns this mod off as incompatible when a newer OddiszCommons is installed.

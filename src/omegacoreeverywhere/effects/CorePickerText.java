@@ -1,6 +1,7 @@
 package omegacoreeverywhere.effects;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -45,7 +46,9 @@ final class CorePickerText implements CampaignUIRenderingListener {
 
     private boolean failed;
     /** One line each in starsector.log, so a picker that keeps its old text can be traced. */
-    private boolean loggedFound, loggedRewrite, loggedOrphan;
+    private boolean loggedFound, loggedOrphan;
+    /** Buildings whose picker line was logged, so each one shows up once. */
+    private final Set<String> loggedBuildings = new HashSet<>();
 
     @Override
     public void renderInUICoordsBelowUI(ViewportAPI viewport) {
@@ -99,9 +102,9 @@ final class CorePickerText implements CampaignUIRenderingListener {
         if (ind == null && !loggedOrphan) {
             loggedOrphan = true;
             log.warn("Omega Core Everywhere: found \"" + before + "\" with no building above it");
-        } else if (ind != null && !loggedRewrite) {
-            loggedRewrite = true;
-            log.info("Omega Core Everywhere: core picker line for " + ind.getId() + ": " + fit);
+        } else if (ind != null && loggedBuildings.add(ind.getId())) {
+            log.info("Omega Core Everywhere: core picker line for " + ind.getId() + ": " + fit
+                    + " (effect " + Effect.of(ind) + ", output now " + ind.getAllSupply().size() + " commodities)");
         }
     }
 

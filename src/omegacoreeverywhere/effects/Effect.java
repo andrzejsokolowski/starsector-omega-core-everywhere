@@ -96,6 +96,12 @@ enum Effect {
         put(OWN, "oddisz_clone_vat_experiments", "oddisz_cloning", "oddisz_cloning_megafactory",
                 "RePA_ReverseEngPhase1Ind", "RePA_ReverseEngPhase2Ind", "RePA_ReverseEngPhase3Ind");
 
+        // Production buildings by id, so a building that makes nothing right now (a new starter farm,
+        // a machinery shortage, a disruption) still names its effect instead of "No effect".
+        put(PRODUCTION, Industries.FARMING, Industries.AQUACULTURE, Industries.MINING, Industries.REFINING,
+                Industries.LIGHTINDUSTRY, Industries.HEAVYINDUSTRY, Industries.ORBITALWORKS, Industries.FUELPROD,
+                Industries.CRYOSANCTUM);
+
         put(GROWTH, Industries.POPULATION);
         put(CREW, Industries.SPACEPORT, Industries.MEGAPORT);
         put(FLEET_SIZE, Industries.PATROLHQ, Industries.MILITARYBASE, Industries.HIGHCOMMAND);
@@ -120,6 +126,12 @@ enum Effect {
                 "IndEvo_ResLab", "IndEvo_ReqCenter", "IndEvo_SwitchablePopulation");
 
         // AoTD Vaults of Knowledge
+        put(PRODUCTION, "aotd_monoculture_plots", "aotd_subsidised_farming", "aotd_artisanal_farming",
+                "aotd_fishing_harbour", "aotd_extractive_operation", "aotd_plasma_harvester",
+                "aotd_mining_megaplex", "aotd_smelting", "aotd_crystalizator", "aotd_enrichment_facility",
+                "aotd_light_production", "aotd_hightech_industry", "aotd_druglight", "aotd_commercial_manu",
+                "aotd_fuel_refinery", "aotd_civilian_heavy_prod", "triheavy", "hegeheavy",
+                "aotd_macro_industrial_complex", "aotd_garden_of_elysium");
         put(RESORT, "aotd_resort_center");
         put(TERMINUS, "aotd_terminus");
         put(TRADE, "aotd_trade_outpost", "aotd_underworld");

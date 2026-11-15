@@ -29,7 +29,7 @@ put back after it, so a save made with this mod still loads without it.
 ## Omega core captains
 
 The base game already lets an Omega core captain an automated ship. Your Omega core captains also
-get Omega Timeflow: time runs 25% faster for their ship. The bonus is a LunaLib setting (0 switches
+get Omega Timeflow: time runs 10% faster for their ship. The bonus is a LunaLib setting (0 switches
 it off). Enemy Omega ships do not get it. The skill comes off before every save and goes back on
 after it.
 

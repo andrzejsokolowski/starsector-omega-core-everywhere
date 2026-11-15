@@ -1,3 +1,7 @@
+Version 1.2.7 (2026-11-15)
+- Omega Timeflow is now +10% (was +25%) and shows in your Omega core captain's skill list in the refit screen. The setting starts again at 10%.
+- Production buildings that make nothing at the moment (a new starter farm such as AoTD's Monoculture Plots, a shortage) now show their Omega effect in the core picker instead of "No effect".
+
 Version 1.2.6 (2026-11-14)
 - Better frame rate on the campaign map: Omega core effects are now checked once a second instead of every frame, also while paused. Omega artillery still fires at its faster rate. A newly installed core takes effect at the latest when the game is unpaused.
 
