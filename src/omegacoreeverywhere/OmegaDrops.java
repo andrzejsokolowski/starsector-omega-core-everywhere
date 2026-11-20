@@ -21,7 +21,6 @@ import com.fs.starfarer.api.impl.campaign.ids.Tags;
  */
 final class OmegaDrops {
 
-    static final String ASTRAL_ASCENSION_ID = "Planetace_AstralAscension";
     static final String DROP_CHANCE_KEY = "drop_prob_officer_" + Commodities.OMEGA_CORE;
 
     private static final Logger log = Global.getLogger(OmegaDrops.class);
@@ -29,13 +28,6 @@ final class OmegaDrops {
     private OmegaDrops() {}
 
     static void apply() {
-        // Astral Ascension removes the tag in its own commodities.csv and sets the chance from its
-        // own settings at every game load. Two mods writing one value would fight, so it wins.
-        if (Global.getSettings().getModManager().isModEnabled(ASTRAL_ASCENSION_ID)) {
-            log.info("Astral Ascension is enabled; leaving Omega core drops to it");
-            return;
-        }
-
         CommoditySpecAPI spec = Global.getSettings().getCommoditySpec(Commodities.OMEGA_CORE);
         if (spec == null) return;
 

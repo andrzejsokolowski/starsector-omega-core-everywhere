@@ -32,8 +32,8 @@ after Andrzej confirmed the core picker in game). Later changes follow the relea
 
 - `src/omegacoreeverywhere/OmegaCoreEverywherePlugin` - mod plugin; registers the LunaLib listener.
 - `src/omegacoreeverywhere/OmegaDrops` - removes the `no_drop` tag from the `omega_core` commodity
-  and sets `drop_prob_officer_omega_core`. Stands down when Astral Ascension
-  (`Planetace_AstralAscension`) is enabled, because it sets the same values.
+  and sets `drop_prob_officer_omega_core`. It checks for no other mod (1.3.1 removed the check
+  that stood down for another Omega core drop mod).
 - `src/omegacoreeverywhere/Settings` - LunaLib reads with defaults.
 - `src/omegacoreeverywhere/effects/OmegaEffects` - transient script and economy listener. Once a
   second of real time (`PassTimer`, also while paused, and at once after a save and on the first
@@ -96,6 +96,12 @@ after Andrzej confirmed the core picker in game). Later changes follow the relea
   inside `OmegaExotics` behind a catch that logs once and fails safe, and before a release run
   `tools/exotica_compat_check.py` against every Exotica version (instructions in the script).
 - `docs/industries.md` - every building that takes an AI core and its Omega effect.
+
+## Own work
+
+Never credit another mod as the origin of this mod or its ideas, and never name mods this mod used
+to defer to, in anything players or readers see: in-game text, mod description, settings, README,
+forum post, release notes, changelog, code (2026-11-21, OCE board ticket of that day).
 
 ## Rules for the effects
 

@@ -161,7 +161,7 @@ Omega: income ×1.5 for every colony you own in that star system, on top of the 
 normal bonus, and the core never burns out. Several Omega Supercomputers in one system still give
 ×1.5 once.
 The crash fix: without this mod an Omega core in a Supercomputer crashes the game a day later (an
-IndEvo bug, it happens with Astral Ascension too), because the Supercomputer moves its core into a
+IndEvo bug), because the Supercomputer moves its core into a
 hidden "running" slot and looks up a lifetime that only exists for Gamma, Beta and Alpha. This mod
 keeps the Omega in the socket, keeps the running slot occupied (by a Gamma core made up for the
 purpose if it is empty) and stretches the running core's lifetime so it never ends. The fix works

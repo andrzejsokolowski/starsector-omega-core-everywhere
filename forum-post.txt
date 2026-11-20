@@ -4,7 +4,7 @@
 [/center]
 [center][b]
 WHAT DOES THIS MOD DO?
-- Omega cores drop from destroyed Omega ships again. No Astral Ascension needed.
+- Omega cores drop from destroyed Omega ships again.
 - An Omega core in a colony building finally does something. Usually something absurd.
 - An Omega core captaining one of your automated ships makes time run faster for it.
 - Factions that buy AI cores pay 500 times the usual reputation for an Omega core.
@@ -140,12 +140,10 @@ Covers the base game, Industrial Evolution, AoTD Vaults of Knowledge, AoTD Seats
 [/table]
 [/spoiler]
 [spoiler=FAQ]
-[b]Does this mod make Omega cores drop without Astral Ascension?[/b]
+[b]Does this mod make Omega cores drop?[/b]
 Yes. That is half of what it is for. A destroyed Omega ship can drop its core: 33% for a frigate, up to always for a capital. The chance is in LunaLib's settings.
-[b]And with Astral Ascension installed?[/b]
-Astral Ascension keeps control of the drops and this mod's drop settings do nothing. The building effects work either way.
-[b]And with Astral Ascension Renewed?[/b]
-They work together: Astral Ascension Renewed adds the Omega core administrator and colonies past size 10, this mod covers the buildings. This mod's drop settings are used.
+[b]And with Colonial Hypergrowth?[/b]
+They work together: Colonial Hypergrowth adds the Omega core administrator and colonies past size 10, this mod covers the buildings. This mod's drop settings are used.
 [b]The core picker still says "No effect" for the Omega core.[/b]
 That is right for the buildings marked "No effect" above. Anywhere else, a Starsector update has probably changed the picker; the building's tooltip then shows the effect under an "Omega core" heading.
 [b]Do I need Industrial Evolution, Vaults of Knowledge or TASC?[/b]
@@ -161,9 +159,6 @@ Yes, once the Omega Subcore, Subsumed Omega Core and Armament Support System (Om
 [b]Why can the Maglev Central Hub not take an Omega core?[/b]
 Vaults of Knowledge does not let any AI core into it, so there is nothing to put the Omega core into.
 [/spoiler]
-[spoiler=Credits]
-Omega core drops were first done by [b]Astral Ascension[/b] by [b]Planetace[/b]. This mod is written from scratch and uses none of its code.
-[/spoiler]
 [spoiler=AI use disclaimer]Some or all assets and code in this mod were created using AI tools:
 [list]
 [li]Code: Claude Code (Claude Opus 5.5)[/li]
@@ -176,6 +171,7 @@ This mod is under the CC0 (Creative Commons Zero) License, allowing you to do wh
 [/spoiler]
 
 [spoiler=Version log]
+1.3.1 - the Omega core drop settings no longer switch themselves off when another mod that makes Omega cores drop is installed.
 1.3.0 - updated for Starsector 0.98.5a.
 1.2.7 - Omega Timeflow is now +10% (was +25%) and shows in your Omega core captain's skill list in the refit screen; the setting starts again at 10%. Production buildings that make nothing at the moment (a new starter farm such as AoTD's Monoculture Plots, a shortage) now show their Omega effect in the core picker instead of "No effect".
 1.2.6 - better frame rate on the campaign map: Omega core effects are now checked once a second instead of every frame, also while paused. Omega artillery still fires at its faster rate. A newly installed core takes effect at the latest when the game is unpaused.

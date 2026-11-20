@@ -69,11 +69,6 @@ Open LunaLib's settings (`Shift+F2` in the campaign) and pick **Omega Core Every
 drop chance, to switch drops or building effects off, or to change the Omega Timeflow bonus.
 Changes apply at once.
 
-## With Astral Ascension
-
-Astral Ascension also makes Omega cores drop. When it is installed, it keeps control of the drops
-and this mod's drop settings do nothing.
-
 ## Requirements
 
 - [LunaLib](https://fractalsoftworks.com/forum/index.php?topic=25658.0)
